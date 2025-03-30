@@ -1,4 +1,4 @@
-{ // Include headers
+// Include headers
 #include <iostream>
 #include <vector>
 #include <cstdint>
@@ -7,9 +7,8 @@
 #include <sstream>
 #include <string>
 #include <cstdarg>
-}
 
-{ // Using directives
+// Using directives
 using std::cout;
 using std::cin;
 using std::cerr;
@@ -19,7 +18,6 @@ using std::string;
 using std::vector;
 using std::ostringstream;
 using std::istringstream;
-}
 
 enum TileProperties {solid, interactable, has_item};
 enum Tile { 
