@@ -185,13 +185,13 @@ Ideas *(long term to do)* ::
   [START]  
   11,1  
   [SPECIAL]  
-  // [x,y:OPTIONAL_DIALOGUE_ID] (presumes next integer for ID)  
+  // [x,y:OPTIONAL_ID] (presumes next integer for ID)  
   1,1;1,4;2,1;4,1;6,1;...6,6;  
   [ITEMS]  
   :KEY // [OPTIONAL_INDEX:ITEM_ID] (presumes next integer for index)  
   // ...  
   [ENGLISH] // My best language  
-  // [OPTIONAL_DIALOGUE_ID: [DIALOGUE || ACTIONS] ... ] (pressumes next integer for ID)  
+  // [OPTIONAL_DIALOGUE_ID: DIALOGUE] (pressumes next integer for ID)  
   :This is Chair 1. It hates Chair 4.  
   :This is Chair 4. Exiled and despised for its crimes.  
   :This is Chair 2. It's Chair 1's best friend. It also -- hates Chair 4.  
