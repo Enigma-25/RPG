@@ -1,60 +1,60 @@
 # RPG
 This (currently) nameless 2D RPG(-ish) is a work-in-progress game that I felt like making. It started in C, but I decided to remake it with C++ because it felt a bit easier (I was *kind of* right about that).
-
+<br>
 In it, you control a little circle (also (currently) nameless) with WASD for movement, e for interacting (though, that has yet to be implemented), q to quit (the preferable way to exit), and i to see your inventory (also yet to be implemented).
-Because it is still a WIP, there is many things in store for the future of this game like... story!... more content!... and more stuff! Yeah, it still has some (a lot) ways to go, but I've got hope for it.  
-  
-  
-...  
-  
-  
-  
-...  
-  
-  
-  
-  
-  
-  
-  
-  
-......  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-................  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-![cat gif](https://media1.tenor.com/m/w87pQ9lyF8UAAAAd/cute-aww.gif)  
-Please accept this gif of a cat I found on the internet as my apology for this lackluster (and very WIP) README.  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-Actually, there is some stuff that could be put here (probably shouldn't be at the bottom, but hey,... I don't know!):  
-  
-  
+Because it is still a WIP, there is many things in store for the future of this game like... story!... more content!... and more stuff! Yeah, it still has some (a lot) ways to go, but I've got hope for it.<br>
+<br>
+<br>
+...<br>
+<br>
+<br>
+<br>
+...<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+......<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+................<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+![cat gif](https://media1.tenor.com/m/w87pQ9lyF8UAAAAd/cute-aww.gif)<br>
+Please accept this gif of a cat I found on the internet as my apology for this lackluster (and very WIP) README.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Actually, there is some stuff that could be put here (probably shouldn't be at the bottom, but hey,... I don't know!):<br>
+<br>
+<br>
 To do ::  
   - Implement interactions  
   - Implement items  
@@ -116,5 +116,6 @@ Ideas ::
       :Es gibt einen Schlüssel darunter. Du nimmst ihn auf. -- [du hast den SCHLÜSSEL gefunden]|ADD_ITEM(1)  
       [EOF]  
       ```
+<br>
   
 That's kind of all I have. This is still very early in development.
