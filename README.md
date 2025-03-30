@@ -54,6 +54,7 @@ Please accept this gif of a cat I found on the internet as my apology for this l
   
 Actually, there is some stuff that could be put here (probably shouldn't be at the bottom, but hey,... I don't know!):  
   
+  
 To do ::  
   - Implement interactions  
   - Implement items  
@@ -65,18 +66,19 @@ To do ::
   
 Ideas ::  
   - 3D array for map coordinates (x, y) and interactions (z)  
-  - prompt() function that prompts user, typically with a question, but accepts more variable inputs  
-  - config.ini file for settings  
-  - save.dat file for save files  
+  - `prompt()` function that prompts user, typically with a question, but accepts more variable inputs  
+  - `config.ini` file for settings  
+  - `save.dat` file for save files  
   - Interchangeable tilesets files  
-  - New .cmap format ::  
+  - New `.cmap` format ::  
     :: Multiple language support embedded into cmaps ::  
       :: Planned Supported Languages ::  
         - English  
         - Spanish  
         - German  
   
-    :: Theoretical Structure (map.cmap) (with comments! (not going to be in actual file)) ::  
+    :: Theoretical Structure (`map.cmap`) (with comments! (not going to be in actual file)) ::  
+      ```
       [MAP]  
       11111111... 120202... ...  
       [START]  
@@ -113,5 +115,6 @@ Ideas ::
       ...  
       :Es gibt einen Schlüssel darunter. Du nimmst ihn auf. -- [du hast den SCHLÜSSEL gefunden]|ADD_ITEM(1)  
       [EOF]  
+      ```
   
 That's kind of all I have. This is still very early in development.
