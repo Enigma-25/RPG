@@ -1,20 +1,16 @@
 #  Unnamed RPG
 
 This *(currently)* nameless text-based 2D RPG*(-ish)* is a work-in-progress game that I felt like making. It started in **`C`**, but I decided to remake it with **`C++`** because it felt a bit easier *(I was **kind of** right about that)*.
-
 <br>
-
 In it, you control a little circle *(also (currently) nameless)* with `WASD` for **move**ment, `e` for **interact**ing *(though, that has yet to be implemented)*, `q` to **quit** *(the preferable way to exit)*, and `i` to see your **inventory** *(also yet to be implemented)*.
-
 <br>
-
 Because it is still a WIP, there are many things in store for the future of this game like... story!... more content!... actual game!... and more stuff!... Yeah, it still has some ***(a lot)*** ways to go, but I've got hope for it.
-
 <br>
 
 # Why?
 
 I was learning C around the time. I was bored. Being a fan of 2D low-graphic RPGs like [UNDERTALE](https://undertale.com/), I though, "What if I made (tried to make) one of those?" I wanted to make something simple, but then my brain said, "What if we made it complicated?" So came into existence  the first prototype. Then, I started learning C++ and I though it was easier *(as long as I didn't go **too** deep)* so here we are with the remaster.
+<br>
 
 # What does it look like?
 In case you want to know what it looks like, there's a gif of me doing stuff in its current state in `./show`. If you're to lazy *(I completely understand... like... **really**)*, here's a copy and paste of the first frame.
@@ -46,14 +42,12 @@ and that handsome `Ｏ` is you, the player (if you play the game).
 Unfortunatley, you wouldn't get much of that from just looking at it. Interacting will give more information, but that isn't here yet. That is one of the many challenges that come with text-based rendering on a tiny canvas (it's like pixel art... but harder somehow...).
 
 *(Yes, it uses unicode characters which might impact compatibility, but I've have no better alternatives (at the moment).)*
-
 <br>
 
 # Running it
 
 Now, to actually **play it**, you have to compile it yourself because it is not to the point where I should be focusing on building for release when half of the features aren't even in it anymore.
 To **compile**, look at the *compile the "game"* section in ***Getting Started?***.
-
 <br>
 
 ## Example:
@@ -62,10 +56,10 @@ To **compile**, look at the *compile the "game"* section in ***Getting Started?*
 g++ main.cpp -o RPG
 ./RPG
 ```
-
 <br>
 
 # What's to come?
+
 There is a more detailed version of this at the bottom, but here is an overview of potential future feature:  
 - Unique interactions for specific tiles  
 - (Save/Settings) data files
@@ -76,7 +70,6 @@ There is a more detailed version of this at the bottom, but here is an overview 
 - More languages?!
 - A more customizable and powerful `.cmap` format that allows for the source file to be essentially and engine and the `.cmaps` to be easy to configure game content making it easier for UGC.
 - Maybe animations?
-
 <br>
 
 # Contributing
@@ -90,19 +83,16 @@ You can...
 - And organize code.  
   
 The code is a *bit* *(just a really really really small tiny ity-bitty— It's a lot... sorry...)* disorganized, but that is soon to change once it reaches somewhere around 500 lines. Then I'll split it up and organize it better *(or at least try)*.
-
 <br>
 
 # Other versions
 
 There is also the older version in `./show`. You can try it *(still have to compile yourself)* if you want, but I wouldn't. While it is more complete, it has a whitespace bug that makes it so you have to zoom out so tiles align, which isn't very convenient. Plus, the code is split into more files, but is still a mess.
-
 <br>
 
 # Getting Started?
 
 You can...
-
 <br>
 
 ## Clone the repository
@@ -111,11 +101,11 @@ You can...
 git clone https://github.com/Enigma-25/RPG.git
 cd  RPG
 ```
+<br>
 
 ## Compile the "game"
 
 To **compile**, there is no makefile yet so use your C/C++ compiler of choice or whatever is available to you, have them in the same folder and compile. Then just run the output file and you can play it *(unless it crashes; in that case... oh well...)*.
-
 <br>
 
 ### Example with G++:
@@ -123,7 +113,6 @@ To **compile**, there is no makefile yet so use your C/C++ compiler of choice or
 ```
 g++ main.cpp -o RPG
 ```
-
 <br>
 
 ## Run the "game"
@@ -131,7 +120,6 @@ g++ main.cpp -o RPG
 ```
 ./RPG
 ```
-
 <br>
 
 ...
@@ -154,17 +142,14 @@ g++ main.cpp -o RPG
 # IM SORRY
 
 ![cat gif](https://media1.tenor.com/m/w87pQ9lyF8UAAAAd/cute-aww.gif)
-
 <br>
 
 Please accept this gif of a cat I found on the internet as my apology for this lackluster (and very WIP) README.
-
 <br><br><br>
 
 ## Wait..?
 
 *Actually*, there is some stuff that could be put here *(probably shouldn't be at the bottom, but hey, ... I don't know!)* :
-
 <br>
 
 To do ::  
@@ -228,7 +213,6 @@ Ideas *(long term to do)* ::
   :Es gibt einen Schlüssel darunter. Du nimmst ihn auf. -- [du hast den SCHLÜSSEL gefunden]|ADD_ITEM(1)  
   [EOF]
   ```  
-  
 <br>
   
 That's kind of all I have. This is still very early in development.
