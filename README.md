@@ -39,7 +39,7 @@ In case you want to know what it looks like, there's a gif of me doing stuff in 
 `［` is a TV screen,  
 
 and that handsome `Ｏ` is you, the player (if you play the game).
-Unfortunatley, you wouldn't get much of that from just looking at it. Interacting will give more information, but that isn't here yet. That is one of the many challenges that come with text-based rendering on a tiny canvas (it's like pixel art... but harder somehow...).
+Unfortunately, you wouldn't get much of that from just looking at it. Interacting will give more information, but that isn't here yet. That is one of the many challenges that come with text-based rendering on a tiny canvas (it's like pixel art... but harder somehow...).
 
 *(Yes, it uses unicode characters which might impact compatibility, but I've have no better alternatives (at the moment).)*
 <br>
@@ -115,12 +115,12 @@ g++ main.cpp -o RPG
 ```
 <br>
 
-## Run the "game"
+## And run the "game"
 
 ```
 ./RPG
 ```
-<br>
+<br><br><br><br><br>
 
 ...
 
