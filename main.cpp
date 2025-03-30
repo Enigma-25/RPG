@@ -19,6 +19,16 @@ using std::vector;
 using std::ostringstream;
 using std::istringstream;
 
+// Global Variables
+const int DIALOGUE_SIZE = 256;
+ostringstream dialogue;
+bool quitGame = false;
+
+// Function Prototypes
+void pushd(const std::string& message, const char* speaker = nullptr);
+void clear();
+
+// Enum Definitions
 enum TileProperties {solid, interactable, has_item};
 enum Tile { 
   EMPTY = 0, 
@@ -31,27 +41,25 @@ enum Tile {
   RIGHT_PANEL = 7
 };
 
+// Classes
+class Map; // Forward declaration
+
 class Player {
-  public:
+public:
   int x, y; // Player position
   Player(int startX, int startY) : x(startX), y(startY) {}
+
+  void playerInput(Map& map); // Now playerInput is a method of the Player class
 };
 
-const int DIALOGUE_SIZE = 256;
-ostringstream dialogue;
-bool quitGame = false;
-vector<vector<Tile>> mapData;
+class Map {
+public:
+  vector<vector<Tile>> mapData; // Map data
+  void drawMap(const Player& player); // Draw the map
+  void getMapData(); // Fetch map data from file
+};
 
-void pushd(const std::string& message, const char* speaker = nullptr);
-void drawMap(const Player& player);
-void getMapData();
-void playerInput(Player& player);
-
-void clear() {
-  cout << "\033[2J\033[1;1H";
-}
-
-void drawMap(const Player& player) {
+void Map::drawMap(const Player& player) {
   clear(); // Clear the console before drawing the map
   for (int row = 0; row < mapData.size(); ++row) {
     for (int col = 0; col < mapData[row].size(); ++col) {
@@ -74,7 +82,7 @@ void drawMap(const Player& player) {
   }
 }
 
-void getMapData() {
+void Map::getMapData() {
   mapData.clear(); // Clear existing map data to avoid appending to old data
   
   ifstream mapFile("map.cmap");
@@ -112,7 +120,7 @@ void getMapData() {
   }
 }
 
-void playerInput(Player& player) {
+void Player::playerInput(Map& map) {
   char cmd;
   cin >> cmd;
   
@@ -120,10 +128,10 @@ void playerInput(Player& player) {
   
   switch (cmd) {
     case 'w': 
-    if (player.y > 0) { // Check if the player isn't at the top edge
-      target = mapData[player.y - 1][player.x]; // Tile above
+    if (y > 0) { // Check if the player isn't at the top edge
+      target = map.mapData[y - 1][x]; // Tile above
       if (target != WALL) { // If tile above is not a wall, move
-        player.y--;
+        y--;
       } else {
         pushd("You can't go through walls.");
       }
@@ -133,10 +141,10 @@ void playerInput(Player& player) {
     break;
     
     case 'a':
-    if (player.x > 0) { // Check if the player isn't at the left edge
-      target = mapData[player.y][player.x - 1]; // Tile to the left
+    if (x > 0) { // Check if the player isn't at the left edge
+      target = map.mapData[y][x - 1]; // Tile to the left
       if (target != WALL) { // If tile to left is not a wall, move
-        player.x--;
+        x--;
       } else {
         pushd("You can't go through walls.");
       }
@@ -146,10 +154,10 @@ void playerInput(Player& player) {
     break;
     
     case 's':
-    if (player.y < mapData.size() - 1) { // Check if the player isn't at the bottom edge
-      target = mapData[player.y + 1][player.x]; // Tile below
+    if (y < map.mapData.size() - 1) { // Check if the player isn't at the bottom edge
+      target = map.mapData[y + 1][x]; // Tile below
       if (target != WALL) { // If tile below is not a wall, move
-        player.y++;
+        y++;
       } else {
         pushd("You can't go through walls.");
       }
@@ -159,10 +167,10 @@ void playerInput(Player& player) {
     break;
     
     case 'd':
-    if (player.x < mapData[player.y].size() - 1) { // Check if the player isn't at the right edge
-      target = mapData[player.y][player.x + 1]; // Tile to the right
+    if (x < map.mapData[y].size() - 1) { // Check if the player isn't at the right edge
+      target = map.mapData[y][x + 1]; // Tile to the right
       if (target != WALL) { // If tile to right is not a wall, move
-        player.x++;
+        x++;
       } else {
         pushd("You can't go through walls.");
       }
@@ -185,11 +193,14 @@ void playerInput(Player& player) {
   }
 }
 
-void pushd(const std::string& message, const char* speaker) { // Function for pushing dialogue
+void clear() { // Clear the console
+  cout << "\033[2J\033[1;1H";
+}
+
+void pushd(const std::string& message, const char* speaker) {
   ostringstream formattedMessage;
   const char* src = message.c_str();
 
-  // Iterate over the message, handling both "--" and "\n" escape sequences
   while (*src) {
     if (*src == '-' && src[1] == '-') {
       formattedMessage << "\n";  // Handle "--" as newline
@@ -202,7 +213,6 @@ void pushd(const std::string& message, const char* speaker) { // Function for pu
     }
   }
 
-  // Format the dialogue output
   if (speaker == nullptr) {
     dialogue << "* \"" << formattedMessage.str() << "\"";  // If no speaker, use "*"
   } else {
@@ -210,45 +220,43 @@ void pushd(const std::string& message, const char* speaker) { // Function for pu
   }
 }
 
-void printd() { // Function for printing pushed dialogue
-  if (!dialogue.str().empty()) { // Only print if there's dialogue
+void printd() {
+  if (!dialogue.str().empty()) {
     cout << dialogue.str() << endl;
   }
   dialogue.str(""); // Reset the string buffer
   dialogue.clear(); // Clear the internal state of the stream
 }
 
-void setup(Player& player) { // Initialize game settings, etc.
-  // Player
+void setup(Player& player, Map& map) {
   player.x = 22;
-  player.y = 1; // Initialize player at position
+  player.y = 1;
 
-  // Map
-  getMapData();
-  drawMap(player); // Draw the map for the first time
+  map.getMapData(); // Fetch the map data
+  map.drawMap(player); // Draw the map with player
 
-  // Start dialogue
   pushd("Use WASD to move, Q to quit.");
-  printd(); // Output the dialogue
+  printd();
 }
 
-void gameLoop(Player& player) { // Main game loop
-  playerInput(player);
-  drawMap(player); // Pass the player object to drawMap
-  printd(); // Prints dialogue
+void gameLoop(Player& player, Map& map) {
+  player.playerInput(map); // Pass the map to playerInput
+  map.drawMap(player); // Draw map with updated player position
+  printd();
 }
 
 int main() {
-  Player player(0, 0); // Initilize player
+  Player player(0, 0); // Initialize player
+  Map map; // Initialize map
 
-  setup(player); // Call setup function to initialize game
+  setup(player, map); // Set up the game with player and map
 
-  while (quitGame != true) {
-    gameLoop(player);
+  while (!quitGame) {
+    gameLoop(player, map); // Run the game loop
   }
   
   clear();
-  pushd("Bye, see ya' later... or not. Preferably not."); // Goodbye message
+  pushd("Bye, see ya' later... or not. Preferably not.");
   printd();
   
   return 0;
