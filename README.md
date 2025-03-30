@@ -120,6 +120,10 @@ g++ main.cpp -o RPG
 ```
 ./RPG
 ```
+<br>
+
+So yeah...
+
 <br><br><br><br><br>
 
 ...
@@ -185,7 +189,7 @@ Ideas *(long term to do)* ::
   1,1;1,4;2,1;4,1;6,1;...6,6;  
   [ITEMS]  
   :KEY // [OPTIONAL_INDEX:ITEM_ID] (presumes next integer for index)  
-  ...  
+  // ...  
   [ENGLISH] // My best language  
   // [OPTIONAL_DIALOGUE_ID: [DIALOGUE || ACTIONS] ... ] (pressumes next integer for ID)  
   :This is Chair 1. It hates Chair 4.  
@@ -193,7 +197,7 @@ Ideas *(long term to do)* ::
   :This is Chair 2. It's Chair 1's best friend. It also -- hates Chair 4.  
   :This is Chair 3. It wants to be friends with Chair -- 1 and 1.  
   :I don't even know who this is.  
-  ...  
+  // ...  
   :There's a key underneath. You pick it up. -- [Found the KEY]|ADD_ITEM(1)  
   [SPANISH] // My first, but weaker, language  
   :Esta es Silla 1. Odia a Silla 4.  
@@ -201,7 +205,7 @@ Ideas *(long term to do)* ::
   :Esta es Silla 2. Es el mejor amigo de Silla 1. También -- odia a Silla 4.  
   :Esta es Silla 3. Quiere ser amigo de Silla -- 1 y 1.  
   :No sé ni quién es.  
-  ...  
+  // ...  
   :Hay una llave debajo. La recoges. -- [Encontrastes la LLAVE]|ADD_ITEM(1)  
   [GERMAN] // My latest and weakest language  
   :Das ist Stuhl 1. Es hasst Stuhl 4.  
@@ -209,7 +213,7 @@ Ideas *(long term to do)* ::
   :Das ist Stuhl 2. Es ist Stuhl 1 bester Freund. Es -- hasst auch Stuhl 4.  
   :Das ist Stuhl 3. Es will mit Stuhl -- 1 und 1 befreundet sein.  
   :Ich weiß nicht einmal, wer das ist.  
-  ...  
+  // ...  
   :Es gibt einen Schlüssel darunter. Du nimmst ihn auf. -- [du hast den SCHLÜSSEL gefunden]|ADD_ITEM(1)  
   [EOF]
   ```  
