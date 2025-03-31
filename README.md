@@ -7,11 +7,11 @@ In it, you control a little circle *(also (currently) nameless)* with `WASD` for
 Because it is still a WIP, there are many things in store for the future of this game like... story!... more content!... actual game!... and more stuff!... Yeah, it still has some ***(a lot)*** ways to go, but I've got hope for it.
 <br>
 
-# Why?
+<!-- # Why?
 
 I was learning C around the time. I was bored. Being a fan of 2D low-graphic RPGs like [UNDERTALE](https://undertale.com/), I though, "What if I made (tried to make) one of those?" I wanted to make something simple, but then my brain said, "What if we made it complicated?" So came into existence  the first prototype. Then, I started learning C++ and I though it was easier *(as long as I didn't go **too** deep)* so here we are with the remaster.
 <br>
-
+-->
 # What does it look like?
 In case you want to know what it looks like, there's a gif of me doing stuff in its current state in `./show`. If you're to lazy *(I completely understand... like... **really**)*, here's a copy and paste of the first frame.
 
