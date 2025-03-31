@@ -7,11 +7,11 @@ In it, you control a little circle *(also (currently) nameless)* with `WASD` for
 Because it is still a WIP, there are many things in store for the future of this game like... story!... more content!... actual game!... and more stuff!... Yeah, it still has some ***(a lot)*** ways to go, but I've got hope for it.
 <br>
 
-# Why?
+<!-- # Why?
 
 I was learning C around the time. I was bored. Being a fan of 2D low-graphic RPGs like [UNDERTALE](https://undertale.com/), I though, "What if I made (tried to make) one of those?" I wanted to make something simple, but then my brain said, "What if we made it complicated?" So came into existence  the first prototype. Then, I started learning C++ and I though it was easier *(as long as I didn't go **too** deep)* so here we are with the remaster.
 <br>
-
+-->
 # What does it look like?
 In case you want to know what it looks like, there's a gif of me doing stuff in its current state in `./show`. If you're to lazy *(I completely understand... like... **really**)*, here's a copy and paste of the first frame.
 
@@ -185,13 +185,13 @@ Ideas *(long term to do)* ::
   [START]  
   11,1  
   [SPECIAL]  
-  // [x,y:OPTIONAL_DIALOGUE_ID] (presumes next integer for ID)  
+  // [x,y:OPTIONAL_ID] (presumes next integer for ID)  
   1,1;1,4;2,1;4,1;6,1;...6,6;  
   [ITEMS]  
   :KEY // [OPTIONAL_INDEX:ITEM_ID] (presumes next integer for index)  
   // ...  
   [ENGLISH] // My best language  
-  // [OPTIONAL_DIALOGUE_ID: [DIALOGUE || ACTIONS] ... ] (pressumes next integer for ID)  
+  // [OPTIONAL_DIALOGUE_ID: DIALOGUE] (pressumes next integer for ID)  
   :This is Chair 1. It hates Chair 4.  
   :This is Chair 4. Exiled and despised for its crimes.  
   :This is Chair 2. It's Chair 1's best friend. It also -- hates Chair 4.  
