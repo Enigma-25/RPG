@@ -56,6 +56,11 @@ Is the same as:
 :This is Chair 3. It wants to be friends with Chair -- 1 and 2.
 :I don't even know who this is.
 :The fridge is empty. Maybe you'll buy groceries... -- later.
+6:Checking again isn't going to change the fact that -- it's empty. // This has ID 6 like the previous dialogue
+6:Again? This is kind of sad.
+
+// Multiple dialogues with the same ID will be linked together and shown in order
+
 :The counter is all nasty. What even is that substance? -- You really are irresponsible. // Because three tiles have an ID of 6 and this has an ID of 6, all three tiles will have this text
 :You tap on the screen. Nothing happens. What did you -- expect? // Similar logic applies here
 :There's a key underneath. You pick it up. -- [You found the KEY]|1|
@@ -68,6 +73,8 @@ Is the same as:
 :Esta es Silla 3. Quiere ser amigo de Silla -- 1 y 1.
 :No sé ni quién es.
 :El refrigerador está vacío. Tal vez compres víveres... -- más tarde.
+6:Revisar de nuevo no va a cambiar el hecho de que -- está vacío.
+6:¿Otra vez? Esto es un poco triste.
 :El mostrador está todo asqueroso. ¿Qué es esa sustancia? -- Realmente eres irresponsable.
 :Tocas en la pantalla. No pasa nada. ¿Qué esperabas?
 :Hay una llave debajo. La recoges. -- [Encontrates la LLAVE]|1|
@@ -80,6 +87,8 @@ Is the same as:
 :Das ist Stuhl 3. Es will mit Stuhl -- 1 und 2 befreundet sein.
 :Ich weiß nicht einmal, wer das ist.
 :Der Kühlschrank ist leer. Vielleicht kaufst du später -- Lebensmittel...
+6:Nochmal nachsehen wird nicht ändern, dass -- es leer ist.
+6:Schon wieder? Das ist ein bisschen traurig.
 :Die Theke ist ekelhaft. Was ist das für eine Substanz? -- Du bist wirklich verantwortungslos.
 :Du klopfst auf den Bildschirm. Nichts passiert. Was hast du -- erwartet?
 :Es gibt einen Schlüssel darunter. Du hebst ihn auf. -- [Du hast den SCHLÜSSEL gefunden]|1|
