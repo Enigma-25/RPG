@@ -1,6 +1,6 @@
 #  Unnamed RPG
 
-This *(currently)* nameless text-based 2D RPG*(-ish)* is a work-in-progress game that I felt like making. It started in **`C`**, but I decided to remake it with **`C++`** because it felt a bit easier *(I was **kind of** right about that)*.
+This is *(currently)* nameless text-based 2D RPG*(-ish)* is a work-in-progress game that I felt like making. It started in **`C`**, but I decided to remake it with **`C++`** because it felt a bit easier *(I was **kind of** right about that)*.
 <br>
 In it, you control a little circle *(also (currently) nameless)* with `WASD` for **move**ment, `e` for **interact**ing *(though, that has yet to be implemented)*, `q` to **quit** *(the preferable way to exit)*, and `i` to see your **inventory** *(also yet to be implemented)*.
 <br>
@@ -171,7 +171,7 @@ Ideas *(long term to do)* ::
 &nbsp;&nbsp;- `config.ini` file for settings  
 &nbsp;&nbsp;- `save.dat` file for save files  
 &nbsp;&nbsp;- Interchangeable tilesets files  
-&nbsp;&nbsp;- New `.cmap` format ::  
+&nbsp;&nbsp;- New `.cmap` format (in-progress) ::  
 &nbsp;&nbsp;  &nbsp;&nbsp;:: Multiple language support embedded into cmaps ::  
 &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;:: Planned Supported Languages ::  
 &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;- English  
@@ -180,42 +180,82 @@ Ideas *(long term to do)* ::
   
 &nbsp;&nbsp;  &nbsp;&nbsp;:: Theoretical Structure (`map.cmap`) (with comments! (not going to be in actual file)) ::  
   ```
-  [MAP]  
-  11111111... 120202... ...  
-  [START]  
-  11,1  
-  [SPECIAL]  
-  // [x,y:OPTIONAL_ID] (presumes next integer for ID)  
-  1,1;1,4;2,1;4,1;6,1;...6,6;  
-  [ITEMS]  
-  :KEY // [OPTIONAL_INDEX:ITEM_ID] (presumes next integer for index)  
-  // ...  
-  [ENGLISH] // My best language  
-  // [OPTIONAL_DIALOGUE_ID: DIALOGUE] (pressumes next integer for ID)  
-  :This is Chair 1. It hates Chair 4.  
-  :This is Chair 4. Exiled and despised for its crimes.  
-  :This is Chair 2. It's Chair 1's best friend. It also -- hates Chair 4.  
-  :This is Chair 3. It wants to be friends with Chair -- 1 and 1.  
-  :I don't even know who this is.  
-  // ...  
-  :There's a key underneath. You pick it up. -- [Found the KEY]|ADD_ITEM(1)  
-  [SPANISH] // My first, but weaker, language  
-  :Esta es Silla 1. Odia a Silla 4.  
-  :Esta es Silla 4. Exiliada y despreciada por sus crímenes.  
-  :Esta es Silla 2. Es el mejor amigo de Silla 1. También -- odia a Silla 4.  
-  :Esta es Silla 3. Quiere ser amigo de Silla -- 1 y 1.  
-  :No sé ni quién es.  
-  // ...  
-  :Hay una llave debajo. La recoges. -- [Encontrastes la LLAVE]|ADD_ITEM(1)  
-  [GERMAN] // My latest and weakest language  
-  :Das ist Stuhl 1. Es hasst Stuhl 4.  
-  :Das ist Stuhl 4. Verbannt und verachtet für seine Verbrechen.  
-  :Das ist Stuhl 2. Es ist Stuhl 1 bester Freund. Es -- hasst auch Stuhl 4.  
-  :Das ist Stuhl 3. Es will mit Stuhl -- 1 und 1 befreundet sein.  
-  :Ich weiß nicht einmal, wer das ist.  
-  // ...  
-  :Es gibt einen Schlüssel darunter. Du nimmst ihn auf. -- [du hast den SCHLÜSSEL gefunden]|ADD_ITEM(1)  
-  [EOF]
+// File for exploring more complicated potential cmap concepts
+
+[MAP]
+// Provides integers to be mapped to characters for drawing of the map
+// The 'a' after a number specifies the player's starting position and the number before it is the tile that is "under" the player
+
+111111111111111111111111 12020202000a1000000001001 100000000003000000003001 100000000001000000001001 1000000111111000000011111 1200001005550100000000001 1110011000000000002011061 1000001700000000002011061 1000001000000000002011061 1000001000000000000000001 1114111111111100000011111 0000000000000011111100000
+
+
+[SPECIAL]
+// Declares which tiles are deemed "special" (meaning they have unique behavior when interacted with)
+// The [x,y] are the coordinates of the tile and the optional [x,y:id] specifies a unique id interaction identifier for linking of behavior
+// IDs start at 1 and increment by 1 for each new special tile unless specified otherwise, after which it continues with next id rather than earliest available (example: 1; 2; 12 (specified); 13; 14; ... )
+
+1,1;1,5;3,1;5,1;7,1;7,7;9,5;10,5:6;11,5:6;23,6;23,7:7;23,8;
+
+/*
+Is the same as:
+1,1:1;
+1,5:2;
+3,1:3;
+5,1:4;
+7,1:5;
+7,7:6;
+9,5:7;
+10,5:7;
+11,5:7;
+23,6:8;
+23,7:9;
+23,8:9;
+*/
+
+[LANG]
+ENGLISH
+SPANISH
+GERMAN
+[EOF]
+
+// Because this is after the [EOF] block, none of this is read by the game making it like a extras or notes section. Becuase of this, I'm going to use it to explain how lang files will work here (because I don't know what else to do)
+
+Here is an example english.lang (with comments!):
+\```
+// Dialogue is linked with a tile ID through having equal ID (tile with ID 1 has dialogue with ID 1, etc.)
+// Dialogue can also invoke actions through the use of |action_id|, which will trigger the action with that ID
+
+:This is Chair 1. It hates Chair 4. // Engine presumes ID of 1
+:This is Chair 4. Exiled and despised for its crimes. // Subsequently, this has ID 2
+:This is Chair 2. It's Chair 1's best friend. It also -- hates Chair 4. // And this, 3
+:This is Chair 3. It wants to be friends with Chair -- 1 and 2.
+:I don't even know who this is.
+
+// Multiple dialogues with the same ID will be linked together and shown in order
+:The fridge is empty. Maybe you'll buy groceries... -- later.
+6:Checking again isn't going to change the fact that -- it's empty. // This has ID 6 like the previous dialogue
+6:Again? This is kind of sad.
+
+:The counter is all nasty. What even is that substance? -- You really are irresponsible. // Because three tiles have an ID of 7 and this has an ID of 7, all three tiles will have this text
+:You tap on the screen. Nothing happens. What did you -- expect? // Similar logic applies here
+:There's a key underneath. You pick it up. -- [You found the KEY]|ADD_ITEM(KEY)|
+\```
+
+Here is a spanish.lang example:
+\```
+[SPANISH]
+:Esta es Silla 1. Odia a Silla 4.
+:Esta es Silla 4. Exiliada y despreciada por sus crímenes.
+:Esta es Silla 2. Es el mejor amigo de Silla 1. También -- odia a Silla 4.
+:Esta es Silla 3. Quiere ser amigo de Silla -- 1 y 2.
+:No sé ni quién es.
+:El refrigerador está vacío. Tal vez compres víveres... -- más tarde.
+6:Revisar de nuevo no va a cambiar el hecho de que -- está vacío.
+6:¿Otra vez? Esto es un poco triste.
+:El mostrador está todo asqueroso. ¿Qué es esa sustancia? -- Realmente eres irresponsable.
+:Tocas en la pantalla. No pasa nada. ¿Qué esperabas?
+:Hay una llave debajo. La recoges. -- [Encontrates la LLAVE]|ADD_ITEM(KEY)|
+\```
   ```  
 <br>
   
