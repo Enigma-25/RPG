@@ -57,6 +57,7 @@ public:
   vector<vector<Tile>> mapData; // Map data
   void drawMap(const Player& player); // Draw the map
   void getMapData(); // Fetch map data from file
+  int spawn[2]; // Starting position
 };
 
 void Map::drawMap(const Player& player) {
@@ -84,6 +85,8 @@ void Map::drawMap(const Player& player) {
 
 void Map::getMapData() {
   mapData.clear(); // Clear existing map data to avoid appending to old data
+  spawn[0] = 0; // Set spawn X position
+  spawn[1] = 0;  // Set spawn Y position
   
   ifstream mapFile("map.cmap");
   if (!mapFile.is_open()) {
@@ -92,32 +95,55 @@ void Map::getMapData() {
   }
   
   string line;
-  string mapSection;
+  string mapDataSection;
   
   // Find the [MAP] section
   while (getline(mapFile, line)) {
-    if (line == "[MAP]") break;
-  }
-  
-  // Read the entire [MAP] section as a single string
-  while (getline(mapFile, line)) {
-    if (line.empty() || line[0] == '[') break; // Stop at the next section or empty line
-    mapSection += line + " ";
-  }
-  
-  // Split the mapSection string into rows based on spaces
-  istringstream mapStream(mapSection);
-  string row;
-  while (mapStream >> row) {
-    vector<Tile> rowData;
-    for (char c : row) {
-      if (c >= '0' && c <= '9') {
-        // Convert numeric characters to enum values
-        rowData.push_back(static_cast<Tile>(c - '0'));
+    if (line == "[MAP]") {
+      // Read the entire [MAP] section as a single string
+      while (getline(mapFile, line)) {
+        if (line.empty() || line[0] == '[') break; // Stop at the next section or empty line
+        mapDataSection += line + " ";
+      }
+
+      // Split the mapSection string into rows based on spaces
+      istringstream mapStream(mapDataSection);
+      string row;
+      while (mapStream >> row) {
+        vector<Tile> rowData;
+        for (char c : row) {
+          if (c == 'a') {
+            // Set spawn position to position of 'a'
+            spawn[0] = rowData.size(); // X position
+            spawn[1] = mapData.size(); // Y position
+          }
+
+          if (c >= '0' && c <= '9') {
+            // Convert numeric characters to enum values
+            rowData.push_back(static_cast<Tile>(c - '0'));
+          }
+        }
+      mapData.push_back(rowData);
       }
     }
-    mapData.push_back(rowData);
+
+    if (line == "[SPECIAL]") {
+
+    }
+
+    if (line == "[LANG]") {
+
+    }
+
+    if (line == "[EOF]") {
+      break; // Stop reading when we reach the end
+    }
+
+    if (line.empty() || (line[0] == '/' && line[1] == '/')) {
+      continue; // Skip empty lines or lines that start withh "//"
+    }
   }
+  mapFile.close(); // Close the file
 }
 
 void Player::playerInput(Map& map) {
