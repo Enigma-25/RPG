@@ -111,7 +111,7 @@ To **compile**, there is no makefile yet so use your C/C++ compiler of choice or
 ### Example with G++:
 
 ```
-g++ main.cpp -o RPG
+g++ *.cpp -o RPG
 ```
 <br>
 
