@@ -23,6 +23,7 @@ using std::istringstream;
 const int DIALOGUE_SIZE = 256;
 ostringstream dialogue;
 bool quitGame = false;
+string mapDirectory = "./map/";
 
 // Function Prototypes
 void pushd(const std::string& message, const char* speaker = nullptr);
@@ -88,9 +89,9 @@ void Map::getMapData() {
   spawn[0] = 0; // Set spawn X position
   spawn[1] = 0;  // Set spawn Y position
   
-  ifstream mapFile("map.cmap");
+  ifstream mapFile(mapDirectory + "map.cmap");
   if (!mapFile.is_open()) {
-    cerr << "Failed to open map file (map.cmap)\n"; 
+    cerr << "Failed to open map file:" << mapDirectory << "map.cmap\n"; 
     return;
   }
   
