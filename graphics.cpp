@@ -1,4 +1,3 @@
-
 #include "main.hpp"
 
 void clear() { // Clear the console

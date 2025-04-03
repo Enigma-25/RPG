@@ -1,3 +1,6 @@
+#ifndef MAIN_HPP
+#define MAIN_HPP
+
 // Include headers
 #include <iostream>
 #include <vector>
@@ -63,11 +66,13 @@ class Map {
 
 // Global Variables
 const int DIALOGUE_SIZE = 256;
-ostringstream dialogue;
-bool quitGame = false;
-string mapDirectory = "./mapName/";
+extern ostringstream dialogue;
+extern bool quitGame;
+extern string mapDirectory;
 
 // Function Prototypes
 void pushd(const std::string& message, const char* speaker = nullptr);
 void printd();
 void clear();
+
+#endif // MAIN_HPP

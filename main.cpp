@@ -1,5 +1,9 @@
 #include "main.hpp"
 
+ostringstream dialogue; // Global variable for dialogue
+string mapDirectory = "./mapName/";
+bool quitGame = false;
+
 void setup(Player& player, Map& map) {
   player.x = 22;
   player.y = 1;
