@@ -1,7 +1,4 @@
 // Include headers
-#include "map.hpp"
-#include "player.hpp"
-
 #include <iostream>
 #include <vector>
 #include <cstdint>
@@ -45,6 +42,25 @@ enum Tile {
   RIGHT_PANEL = 7
 };
 
+// Class Declarations
+class Map; // Forward declaration
+
+class Player {
+  public:
+    int x, y; // Player position
+    Player(int startX, int startY) : x(startX), y(startY) {}
+  
+    void playerInput(Map& map); // Now playerInput is a method of the Player class
+  };
+
+class Map {
+  public:
+    vector<vector<Tile>> mapData; // Map data
+    void drawMap(const Player& player); // Draw the map
+    void getMapData(); // Fetch map data from file
+    int spawn[2]; // Starting position
+};
+
 // Global Variables
 const int DIALOGUE_SIZE = 256;
 ostringstream dialogue;
@@ -53,4 +69,5 @@ string mapDirectory = "./mapName/";
 
 // Function Prototypes
 void pushd(const std::string& message, const char* speaker = nullptr);
+void printd();
 void clear();
