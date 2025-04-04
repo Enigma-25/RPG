@@ -69,7 +69,13 @@ void Map::getMapData() {
     }
     
     if (line == "[SPECIAL]") {
-      continue; // Coming soon
+      continue;
+      /*
+      read until line[0] == '['
+      1,1:1 <- expected line format
+      read current line until ',' or if newline, ':', or ';' is encountered first, throw error
+      
+      */
     }
     
     if (line == "[LANG]") {
@@ -77,7 +83,7 @@ void Map::getMapData() {
     }
     
     if (line == "[EOF]") {
-      break; // Stop reading when we reach the end
+      break; // Stop reading
     }
     
     if (line.empty() || (line[0] == '/' && line[1] == '/')) {
