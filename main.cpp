@@ -13,15 +13,15 @@ void Map::drawMap(const Player& player) {
         continue;
       }
       switch (mapData[row][col]) {
-      case EMPTY: cout << "　"; break; // Space
-      case WALL: cout << "Ｈ"; break; // Wall
-      case CHAIR: cout << "＃"; break; // Chair
-      case VERTICAL_DOOR: cout << "｜"; break; // Vertical Door
-      case HORIZONTAL_DOOR: cout << "－"; break; // Horizontal Door
-      case TABLE: cout << "＝"; break; // Table/Counter/Bar/Desk
-      case LEFT_PANEL: cout << "［"; break; // Left-facing panel
-      case RIGHT_PANEL: cout << "］"; break; // Right-facing panel
-      default: cout << "？"; break; // Unknown tile
+        case EMPTY: cout << "　"; break; // Space
+        case WALL: cout << "Ｈ"; break; // Wall
+        case CHAIR: cout << "＃"; break; // Chair
+        case VERTICAL_DOOR: cout << "｜"; break; // Vertical Door
+        case HORIZONTAL_DOOR: cout << "－"; break; // Horizontal Door
+        case TABLE: cout << "＝"; break; // Table/Counter/Bar/Desk
+        case LEFT_PANEL: cout << "［"; break; // Left-facing panel
+        case RIGHT_PANEL: cout << "］"; break; // Right-facing panel
+        default: cout << "？"; break; // Unknown tile
       }
     }
     cout << endl;
@@ -30,14 +30,10 @@ void Map::drawMap(const Player& player) {
 
 void Map::getMapData() {
   mapData.clear(); // Clear existing map data to avoid appending to old data
-  spawn[0] = 0; // Set spawn X position
-  spawn[1] = 0;  // Set spawn Y position
+  spawn[0] = 0; spawn[1] = 0;  // Set spawn position
   
   ifstream mapFile(mapDirectory + "map.cmap");
-  if (!mapFile.is_open()) {
-    cerr << "Failed to open map file:" << mapDirectory << "map.cmap\n"; 
-    return;
-  }
+  if (!mapFile.is_open()) {cerr << "Failed to open map file:" << mapDirectory << "map.cmap\n"; return;}
   
   string line;
   string mapDataSection;
@@ -50,7 +46,7 @@ void Map::getMapData() {
         if (line.empty() || line[0] == '[') break; // Stop at the next section or empty line
         mapDataSection += line + " ";
       }
-
+      
       // Split the mapSection string into rows based on spaces
       istringstream mapStream(mapDataSection);
       string row;
@@ -62,28 +58,28 @@ void Map::getMapData() {
             spawn[0] = rowData.size(); // X position
             spawn[1] = mapData.size(); // Y position
           }
-
+          
           if (c >= '0' && c <= '9') {
             // Convert numeric characters to enum values
             rowData.push_back(static_cast<Tile>(c - '0'));
           }
         }
-      mapData.push_back(rowData);
+        mapData.push_back(rowData);
       }
     }
-
+    
     if (line == "[SPECIAL]") {
-      // Coming soon
+      continue; // Coming soon
     }
-
+    
     if (line == "[LANG]") {
-      // Coming soon
+      continue; // Coming soon
     }
-
+    
     if (line == "[EOF]") {
       break; // Stop reading when we reach the end
     }
-
+    
     if (line.empty() || (line[0] == '/' && line[1] == '/')) {
       continue; // Skip empty lines or lines that start withh "//"
     }
@@ -91,11 +87,15 @@ void Map::getMapData() {
   mapFile.close(); // Close the file
 }
 
+
 void Player::playerInput(Map& map) {
   char cmd;
   cin >> cmd;
   
   Tile target;
+
+  string wallBlock = "You can't go through walls.";
+  string boundsBlock = "Going out of bounds isn't allowed.";
   
   switch (cmd) {
     case 'w': 
@@ -104,10 +104,10 @@ void Player::playerInput(Map& map) {
       if (target != WALL) { // If tile above is not a wall, move
         y--;
       } else {
-        pushd("You can't go through walls.");
+        pushd(wallBlock);
       }
     } else {
-      pushd("Going out of bounds isn't allowed.");
+      pushd(boundsBlock);
     }
     break;
     
@@ -117,10 +117,10 @@ void Player::playerInput(Map& map) {
       if (target != WALL) { // If tile to left is not a wall, move
         x--;
       } else {
-        pushd("You can't go through walls.");
+        pushd(wallBlock);
       }
     } else {
-      pushd("Going out of bounds isn't allowed.");
+      pushd(boundsBlock);
     }
     break;
     
@@ -130,10 +130,10 @@ void Player::playerInput(Map& map) {
       if (target != WALL) { // If tile below is not a wall, move
         y++;
       } else {
-        pushd("You can't go through walls.");
+        pushd(wallBlock);
       }
     } else {
-      pushd("Going out of bounds isn't allowed.");
+      pushd(boundsBlock);
     }
     break;
     
@@ -143,10 +143,10 @@ void Player::playerInput(Map& map) {
       if (target != WALL) { // If tile to right is not a wall, move
         x++;
       } else {
-        pushd("You can't go through walls.");
+        pushd(wallBlock);
       }
     } else {
-      pushd("Going out of bounds isn't allowed.");
+      pushd(boundsBlock);
     }
     break;
     
@@ -171,7 +171,7 @@ void clear() { // Clear the console
 void pushd(const std::string& message, const char* speaker) {
   ostringstream formattedMessage;
   const char* src = message.c_str();
-
+  
   while (*src) {
     if (*src == '-' && src[1] == '-') {
       formattedMessage << "\n";  // Handle "--" as newline
@@ -183,7 +183,7 @@ void pushd(const std::string& message, const char* speaker) {
       formattedMessage.put(*src++);  // Add regular character
     }
   }
-
+  
   if (speaker == nullptr) {
     dialogue << "* \"" << formattedMessage.str() << "\"";  // If no speaker, use "*"
   } else {
@@ -202,10 +202,10 @@ void printd() {
 void setup(Player& player, Map& map) {
   player.x = 22;
   player.y = 1;
-
+  
   map.getMapData(); // Fetch the map data
   map.drawMap(player); // Draw the map with player
-
+  
   pushd("Use WASD to move, Q to quit.");
   printd();
 }
@@ -219,15 +219,15 @@ void gameLoop(Player& player, Map& map) {
 int main() {
   Player player(0, 0); // Initialize player
   Map map; // Initialize map
-
+  
   setup(player, map); // Set up the game with player and map
-
+  
   while (!quitGame) {
     gameLoop(player, map); // Run the game loop
   }
   
   clear();
-  pushd("Bye, see ya' later... or not. Preferably not.\n");
+  pushd("Bye, see ya' later... or not. Preferably not.");
   printd();
   
   return 0;
