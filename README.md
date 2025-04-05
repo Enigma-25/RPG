@@ -25,7 +25,7 @@ In case you want to know what it looks like, there's a gif of me doing stuff in 
 Ｈ　　　　　　ＨＨＨＨＨＨ　　　　　　　ＨＨＨＨＨ
 Ｈ＃　　　　Ｈ　　＝＝＝　Ｈ　　　　　　　　　　Ｈ
 ＨＨＨ　　ＨＨ　　　　　 　　　　　　＃　ＨＨ　[Ｈ
-Ｈ　　　　　Ｈ］ 　　　　 　　　　　　＃　ＨＨ　[Ｈ
+Ｈ　　　　　Ｈ］ 　　　　 　　　　　＃　ＨＨ　[Ｈ
 Ｈ　　　　　Ｈ　　　　　　 　　　　　＃　ＨＨ　[Ｈ
 Ｈ　　　　　Ｈ　　　　　　　　　　　　　　　　　Ｈ
 ＨＨＨ－ＨＨＨＨＨＨＨＨＨＨ　　　　　　ＨＨＨＨＨ
@@ -140,7 +140,7 @@ So yeah...
 
 # IM SORRY
 
-![cat gif](https://media1.tenor.com/m/w87pQ9lyF8UAAAAd/cute-aww.gif)
+<span title="It's a GIF kitty...">![cat gif](https://media1.tenor.com/m/w87pQ9lyF8UAAAAd/cute-aww.gif)</span>
 <br>
 
 Please accept this gif of a cat I found on the internet as my apology for this lackluster README.
