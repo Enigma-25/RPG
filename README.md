@@ -13,7 +13,7 @@ I was learning C around the time. I was bored. Being a fan of 2D low-graphic RPG
 <br>
 -->
 # What does it look like?
-In case you want to know what it looks like, there's a gif of me doing stuff in its current state in `./show`. If you're to lazy *(I completely understand... like... **really**)*, here's a copy and paste of the first frame.
+In case you want to know what it looks like, there's a gif of me doing stuff in its current state in [`./extras`](extras/). If you're to lazy *(I completely understand... like... **really**)*, here's a copy and paste of the first frame.
 
 ```
 ＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨＨ
@@ -22,9 +22,9 @@ In case you want to know what it looks like, there's a gif of me doing stuff in 
 Ｈ　　　　　　　　　　Ｈ　　　　　　　　Ｈ　　Ｈ
 Ｈ　　　　　　ＨＨＨＨＨＨ　　　　　　　ＨＨＨＨＨ
 Ｈ＃　　　　Ｈ　　＝＝＝　Ｈ　　　　　　　　　　Ｈ
-ＨＨＨ　　ＨＨ　　　　　　　　　　　＃　ＨＨ　[Ｈ
-Ｈ　　　　　Ｈ］　　　　　　　　　　＃　ＨＨ　[Ｈ
-Ｈ　　　　　Ｈ　　　　　　　　　　　＃　ＨＨ　[Ｈ
+ＨＨＨ　　ＨＨ　　　　　 　　　　　　＃　ＨＨ　[Ｈ
+Ｈ　　　　　Ｈ］ 　　　　 　　　　　　＃　ＨＨ　[Ｈ
+Ｈ　　　　　Ｈ　　　　　　 　　　　　＃　ＨＨ　[Ｈ
 Ｈ　　　　　Ｈ　　　　　　　　　　　　　　　　　Ｈ
 ＨＨＨ－ＨＨＨＨＨＨＨＨＨＨ　　　　　　ＨＨＨＨＨ
 　　　　　　　　　　　　　　ＨＨＨＨＨＨ　　　　　
@@ -47,15 +47,7 @@ Unfortunately, you wouldn't get much of that from just looking at it. Interactin
 # Running it
 
 Now, to actually **play it**, you have to compile it yourself because it is not to the point where I should be focusing on building for release when half of the features aren't even in it anymore.
-To **compile**, look at the *compile the "game"* section in ***Getting Started?***.
-<br>
-
-## Example:
-
-```
-g++ main.cpp -o RPG
-./RPG
-```
+To **compile**, look at the [*compile the "game"*](#compile-the-game) section in [***Getting Started?***](#getting-started).
 <br>
 
 # What's to come?
@@ -76,7 +68,7 @@ There is a more detailed version of this at the bottom, but here is an overview 
 
 But in this state, you *can* **contribute** to it.  
 You can...  
-- Add maps by making your own `.cmap` file *(comprehensible example at bottom)*.  
+- Add maps by making your own `.cmap` file [*(comprehensible example at bottom)*](#cmap-structure).  
 - Add to the code to speed up development *(if you know what you are doing)*. If you know how to do something in an objectively better way, refactor! Just, don't break everything... I do that myself enough as it is.  
 - You can fix bugs that I haven't gotten to yet. If you don't know how, but found a bug (which you probably will), feel free to open an issue.  
 - Or maybe you have a suggestion? That's helpful too—as long as the suggestion is helpful, that is.  
@@ -87,7 +79,7 @@ The code is a *bit* *(just a really really really small tiny ity-bitty— It's a
 
 # Other versions
 
-There is also the older version in `./show`. You can try it *(still have to compile yourself)* if you want, but I wouldn't. While it is more complete, it has a whitespace bug that makes it so you have to zoom out so tiles align, which isn't very convenient. Plus, the code is split into more files, but is still a mess.
+There is also the older version in [`./extras`](extras/). You can try it *(still have to compile yourself)* if you want, but I wouldn't. While it is more complete, it has a whitespace bug that makes it so you have to zoom out so tiles align, which isn't very convenient. Plus, the code is split into more files, but is still a mess.
 <br>
 
 # Getting Started?
@@ -149,7 +141,7 @@ So yeah...
 ![cat gif](https://media1.tenor.com/m/w87pQ9lyF8UAAAAd/cute-aww.gif)
 <br>
 
-Please accept this gif of a cat I found on the internet as my apology for this lackluster (and very WIP) README.
+Please accept this gif of a cat I found on the internet as my apology for this lackluster README.
 <br><br><br>
 
 ## Wait..?
@@ -157,29 +149,29 @@ Please accept this gif of a cat I found on the internet as my apology for this l
 *Actually*, there is some stuff that could be put here *(probably shouldn't be at the bottom, but hey, ... I don't know!)* :
 <br>
 
-To do ::  
-&nbsp;&nbsp;- Implement interactions  
-&nbsp;&nbsp;- Implement items  
-&nbsp;&nbsp;- Add door functionality  
-&nbsp;&nbsp;- Other stuff that I don't remember
-&nbsp;&nbsp;- Remembr the stuff I didn't rememberer  
-&nbsp;&nbsp;- Remmbrer to remmmeber the stuff that I didn't remeenmembr  
-&nbsp;&nbsp;- Rmemmmbereber that writing rmeembbemebreber over and over again is not good for me  
+### To do  
+- Implement interactions  
+- Implement items  
+- Add door functionality  
+- Other stuff that I don't remember
+- Remembr the stuff I didn't rememberer  
+- Remmbrer to remmmeber the stuff that I didn't remeenmembr  
+- Rmemmmbereber that writing rmeembbemebreber over and over again is not good for me  
   
-Ideas *(long term to do)* ::  
-&nbsp;&nbsp;- 3D array for map coordinates (x, y) and interactions (z)  
-&nbsp;&nbsp;- `prompt()` function that prompts user, typically with a question, but accepts more variable inputs  
-&nbsp;&nbsp;- `config.ini` file for settings  
-&nbsp;&nbsp;- `save.dat` file for save files  
-&nbsp;&nbsp;- Interchangeable tilesets files  
-&nbsp;&nbsp;- New `.cmap` format (in-progress) ::  
-&nbsp;&nbsp;  &nbsp;&nbsp;:: Multiple language support embedded into cmaps ::  
-&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;:: Planned Supported Languages ::  
-&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;- English  
-&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;- Spanish  
-&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;- ...
+### Ideas *(long term to do)*  
+- 3D array for map coordinates (x, y) and interactions (z)  
+- `prompt()` function that prompts user, typically with a question, but accepts more variable inputs  
+- `config.ini` file for settings  
+- `save.dat` file for save files  
+- Interchangeable tilesets files  
+- New `.cmap` format (in-progress)  
+&nbsp;&nbsp; Multiple language support embedded into cmaps  
+&nbsp;&nbsp; &nbsp;&nbsp; Planned Supported Languages  
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;- English  
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;- Spanish  
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;- ...
   
-&nbsp;&nbsp;  &nbsp;&nbsp;:: Theoretical Structure (`map.cmap`) (with comments! (not going to be in actual file)) ::  
+### Cmap structure
 ```
 [MAP]
 // Provides integers to be mapped to characters for drawing of the map
