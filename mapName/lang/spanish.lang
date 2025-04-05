@@ -1,9 +1,0 @@
-1:Esta es Silla 1. Odia a Silla 4.
-2:Esta es Silla 4. Exiliada y despreciada por sus crímenes.
-3:Esta es Silla 2. Es el mejor amigo de Silla 1. También -- odia a Silla 4.
-4:Esta es Silla 3. Quiere ser amigo de Silla -- 1 y 1.
-5:No sé ni quién es.
-6:El refrigerador está vacío. Tal vez compres víveres... -- más tarde.
-7:El mostrador está todo asqueroso. ¿Qué es esa sustancia? -- Realmente eres irresponsable.
-8:Tocas en la pantalla. No pasa nada. ¿Qué esperabas?
-9:Hay una llave debajo. La recoges. -- [Encontrates la LLAVE]|ADD_ITEM(KEY)|
