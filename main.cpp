@@ -3,6 +3,7 @@
 ostringstream dialogue; // Global variable for dialogue
 string mapDirectory = "./mapName/";
 bool quitGame = false;
+bool interactionMode = false;
 
 void Map::drawMap(const Player& player) {
   clear(); // Clear the console before drawing the map
@@ -12,7 +13,7 @@ void Map::drawMap(const Player& player) {
         cout << "Ｏ"; // Draw player
         continue;
       }
-      switch (mapData[row][col]) {
+      switch (mapData[row][col].tileType) {
         case EMPTY: cout << "　"; break; // Space
         case WALL: cout << "Ｈ"; break; // Wall
         case CHAIR: cout << "＃"; break; // Chair
@@ -33,7 +34,10 @@ void Map::getMapData() {
   spawn[0] = 0; spawn[1] = 0;  // Set spawn position
   
   ifstream mapFile(mapDirectory + "map.cmap");
-  if (!mapFile.is_open()) {cerr << "Failed to open map file:" << mapDirectory << "map.cmap\n"; return;}
+  if (!mapFile.is_open()) {
+    cerr << "Failed to open map file:" << mapDirectory << "map.cmap\n";
+    return;
+  }
   
   string line;
   string mapDataSection;
@@ -51,8 +55,11 @@ void Map::getMapData() {
       istringstream mapStream(mapDataSection);
       string row;
       while (mapStream >> row) {
-        vector<Tile> rowData;
+        vector<Tile> rowData; // Vector to store Tile for the row
+        
         for (char c : row) {
+          Tile tile; // Create a new Tile entry
+          
           if (c == 'a') {
             // Set spawn position to position of 'a'
             spawn[0] = rowData.size(); // X position
@@ -60,26 +67,64 @@ void Map::getMapData() {
           }
           
           if (c >= '0' && c <= '9') {
-            // Convert numeric characters to enum values
-            rowData.push_back(static_cast<Tile>(c - '0'));
+            tile.tileType = static_cast<TileType>(c - '0');  // Set the Tile type based on the character
           }
+          
+          tile.specialID = -1; // Default to no Special ID initially (you'll modify this later)
+          
+          rowData.push_back(tile); // Push the Tile to the row
         }
-        mapData.push_back(rowData);
+        mapData.push_back(rowData); // Add the row to mapData
       }
     }
     
     if (line == "[SPECIAL]") {
-      continue;
-      /*
-      read until line[0] == '['
-      1,1:1 <- expected line format
-      read current line until ',' or if newline, ':', or ';' is encountered first, throw error
-      
-      */
-    }
-    
-    if (line == "[LANG]") {
-      continue; // Coming soon
+      // Handle special ID section
+      while (getline(mapFile, line)) {
+        if (line.empty() || line[0] == '[') break; // Stop at the next section or empty line
+        
+        // Parse Special section format: "x,y:id"
+        istringstream specialStream(line);
+        int x, y, id;
+        
+        // Read the x coordinate
+        if (!(specialStream >> x)) {
+          cerr << "Error: Invalid x coordinate in special section\n";
+          continue;
+        }
+        
+        // Expect a comma
+        if (specialStream.get() != ',') {
+          cerr << "Error: Expected ',' in special section\n";
+          continue;
+        }
+        
+        // Read the y coordinate
+        if (!(specialStream >> y)) {
+          cerr << "Error: Invalid y coordinate in special section\n";
+          continue;
+        }
+        
+        // Expect a colon
+        if (specialStream.get() != ':') {
+          cerr << "Error: Expected ':' in special section\n";
+          continue;
+        }
+        
+        // Read the special ID
+        if (!(specialStream >> id)) {
+          cerr << "Error: Invalid Special ID in special section\n";
+          continue;
+        }
+        
+        // Ensure coordinates are within map bounds
+        if (x >= 0 && x < mapData.size() && y >= 0 && y < mapData[x].size()) {
+          // Assign the special ID to the correct position in the map data
+          mapData[x][y].specialID = id;
+        } else {
+          cerr << "Error: Special ID coordinates out of bounds: (" << x << ", " << y << ")\n";
+        }
+      }
     }
     
     if (line == "[EOF]") {
@@ -87,7 +132,7 @@ void Map::getMapData() {
     }
     
     if (line.empty() || (line[0] == '/' && line[1] == '/')) {
-      continue; // Skip empty lines or lines that start withh "//"
+      continue; // Skip empty lines or lines that start with "//"
     }
   }
   mapFile.close(); // Close the file
@@ -98,16 +143,24 @@ void Player::playerInput(Map& map) {
   char cmd;
   cin >> cmd;
   
-  Tile target;
-
+  TileType target_type;
+  
   string wallBlock = "You can't go through walls.";
   string boundsBlock = "Going out of bounds isn't allowed.";
   
   switch (cmd) {
     case 'w': 
     if (y > 0) { // Check if the player isn't at the top edge
-      target = map.mapData[y - 1][x]; // Tile above
-      if (target != WALL) { // If tile above is not a wall, move
+      target_type = map.mapData[y - 1][x].tileType; // Tile above
+
+      if (interactionMode) {
+        // Handle interaction logic here
+        pushd("You interacted."); // Placeholder statement
+        interactionMode = false; // Reset interaction mode
+        break;
+      }
+
+      if (target_type != WALL) { // If tile above is not a wall, move
         y--;
       } else {
         pushd(wallBlock);
@@ -119,8 +172,16 @@ void Player::playerInput(Map& map) {
     
     case 'a':
     if (x > 0) { // Check if the player isn't at the left edge
-      target = map.mapData[y][x - 1]; // Tile to the left
-      if (target != WALL) { // If tile to left is not a wall, move
+      target_type = map.mapData[y][x - 1].tileType; // Tile to the left
+
+      if (interactionMode) {
+        // Handle interaction logic here
+        pushd("You interacted."); // Placeholder statement
+        interactionMode = false; // Reset interaction mode
+        break;
+      }
+
+      if (target_type != WALL) { // If tile to left is not a wall, move
         x--;
       } else {
         pushd(wallBlock);
@@ -132,8 +193,16 @@ void Player::playerInput(Map& map) {
     
     case 's':
     if (y < map.mapData.size() - 1) { // Check if the player isn't at the bottom edge
-      target = map.mapData[y + 1][x]; // Tile below
-      if (target != WALL) { // If tile below is not a wall, move
+      target_type = map.mapData[y + 1][x].tileType; // Tile below
+
+      if (interactionMode) {
+        // Handle interaction logic here
+        pushd("You interacted."); // Placeholder statement
+        interactionMode = false; // Reset interaction mode
+        break;
+      }
+
+      if (target_type != WALL) { // If tile below is not a wall, move
         y++;
       } else {
         pushd(wallBlock);
@@ -145,8 +214,16 @@ void Player::playerInput(Map& map) {
     
     case 'd':
     if (x < map.mapData[y].size() - 1) { // Check if the player isn't at the right edge
-      target = map.mapData[y][x + 1]; // Tile to the right
-      if (target != WALL) { // If tile to right is not a wall, move
+      target_type = map.mapData[y][x + 1].tileType; // Tile to the right
+
+      if (interactionMode) {
+        // Handle interaction logic here
+        pushd("You interacted."); // Placeholder statement
+        interactionMode = false; // Reset interaction mode
+        break;
+      }
+
+      if (target_type != WALL) { // If tile to right is not a wall, move
         x++;
       } else {
         pushd(wallBlock);
@@ -157,7 +234,15 @@ void Player::playerInput(Map& map) {
     break;
     
     case 'e':
-    pushd("Interaction hasn't been implemented yet.");
+
+    if (interactionMode) {
+      // Handle interaction logic here
+      pushd("No debug mode yet."); // Placeholder statement
+      interactionMode = false; // Reset interaction mode
+      break;
+    }
+
+    interactionMode = true; // Set interaction mode
     break;
     
     case 'q':
@@ -166,6 +251,7 @@ void Player::playerInput(Map& map) {
     
     default:
     pushd("Invalid command.");
+    interactionMode = false; // Reset interaction mode
     break;
   }
 }

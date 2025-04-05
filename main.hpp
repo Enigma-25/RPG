@@ -34,7 +34,7 @@ enum DebugMode {
   VERBOSE = 7
 };
 enum TileProperties {solid, interactable, has_item};
-enum Tile { 
+enum TileType { 
   EMPTY = 0, 
   WALL = 1, 
   CHAIR = 2, 
@@ -43,6 +43,11 @@ enum Tile {
   TABLE = 5, 
   LEFT_PANEL = 6, 
   RIGHT_PANEL = 7
+};
+
+struct Tile {
+  TileType tileType = EMPTY;  // Tile type (enum)
+  int specialID = -1;  // Special ID for interaction
 };
 
 // Class Declarations
@@ -69,6 +74,7 @@ const int DIALOGUE_SIZE = 256;
 extern ostringstream dialogue;
 extern bool quitGame;
 extern string mapDirectory;
+extern bool interactionMode;
 
 // Function Prototypes
 void pushd(const std::string& message, const char* speaker = nullptr);
