@@ -18,7 +18,7 @@ void Map::drawMap(const Player& player) {
         case WALL: cout << "Ｈ"; break; // Wall
         case CHAIR: cout << "＃"; break; // Chair
         case VERTICAL_DOOR: cout << "｜"; break; // Vertical Door
-        case HORIZONTAL_DOOR: cout << "－"; break; // Horizontal Door
+        case HORIZONTAL_DOOR: cout << "＿"; break; // Horizontal Door
         case TABLE: cout << "＝"; break; // Table/Counter/Bar/Desk
         case LEFT_PANEL: cout << "［"; break; // Left-facing panel
         case RIGHT_PANEL: cout << "］"; break; // Right-facing panel
@@ -36,7 +36,8 @@ void Map::getMapData() {
   ifstream mapFile(mapDirectory + "map.cmap");
   if (!mapFile.is_open()) {
     cerr << "Failed to open map file:" << mapDirectory << "map.cmap\n";
-    return;
+    pushError("Failed to open map file: " + mapDirectory + "map.cmap");
+    return; // This will be changed to use a default map
   }
   
   string line;
@@ -68,6 +69,30 @@ void Map::getMapData() {
           
           if (c >= '0' && c <= '9') {
             tile.tileType = static_cast<TileType>(c - '0');  // Set the Tile type based on the character
+            
+            // Set properties based on tile type
+            switch (tile.tileType) {
+            case WALL:
+              tile.setProperty(solid);
+              break;
+            case CHAIR:
+              tile.setProperty(interactable);
+              break;
+            case TABLE:
+              tile.setProperty(solid);
+              // tile.setProperty(interactable);  // Not yet
+              break;
+            case VERTICAL_DOOR:
+            case HORIZONTAL_DOOR:
+              tile.setProperty(interactable);
+              break;
+            case LEFT_PANEL:
+            case RIGHT_PANEL:
+              tile.setProperty(interactable);
+              break;
+            default:
+              break;
+            }
           }
           
           tile.specialID = -1; // Default to no Special ID initially (you'll modify this later)
@@ -142,25 +167,29 @@ void Map::getMapData() {
 void Player::playerInput(Map& map) {
   char cmd;
   cin >> cmd;
+  bool interactionMode = false;
   
-  TileType target_type;
-  
-  string wallBlock = "You can't go through walls.";
+  string wallBlock = "You can't move there.";
   string boundsBlock = "Going out of bounds isn't allowed.";
+  
+  Tile* target_tile = nullptr;
   
   switch (cmd) {
     case 'w': 
-    if (y > 0) { // Check if the player isn't at the top edge
-      target_type = map.mapData[y - 1][x].tileType; // Tile above
-
+    if (y > 0) {
+      target_tile = &map.mapData[y - 1][x];
+      
       if (interactionMode) {
-        // Handle interaction logic here
-        pushd("You interacted."); // Placeholder statement
-        interactionMode = false; // Reset interaction mode
+        if (target_tile->hasProperty(interactable)) {
+          pushd("You interacted.");
+        } else {
+          pushd("Nothing to interact with here.");
+        }
+        interactionMode = false;
         break;
       }
-
-      if (target_type != WALL) { // If tile above is not a wall, move
+      
+      if (!target_tile->hasProperty(solid)) {
         y--;
       } else {
         pushd(wallBlock);
@@ -171,17 +200,20 @@ void Player::playerInput(Map& map) {
     break;
     
     case 'a':
-    if (x > 0) { // Check if the player isn't at the left edge
-      target_type = map.mapData[y][x - 1].tileType; // Tile to the left
-
+    if (x > 0) {
+      target_tile = &map.mapData[y][x - 1];
+      
       if (interactionMode) {
-        // Handle interaction logic here
-        pushd("You interacted."); // Placeholder statement
-        interactionMode = false; // Reset interaction mode
+        if (target_tile->hasProperty(interactable)) {
+          pushd("You interacted.");
+        } else {
+          pushd("Nothing to interact with here.");
+        }
+        interactionMode = false;
         break;
       }
-
-      if (target_type != WALL) { // If tile to left is not a wall, move
+      
+      if (!target_tile->hasProperty(solid)) {
         x--;
       } else {
         pushd(wallBlock);
@@ -192,17 +224,20 @@ void Player::playerInput(Map& map) {
     break;
     
     case 's':
-    if (y < map.mapData.size() - 1) { // Check if the player isn't at the bottom edge
-      target_type = map.mapData[y + 1][x].tileType; // Tile below
-
+    if (y < map.mapData.size() - 1) {
+      target_tile = &map.mapData[y + 1][x];
+      
       if (interactionMode) {
-        // Handle interaction logic here
-        pushd("You interacted."); // Placeholder statement
-        interactionMode = false; // Reset interaction mode
+        if (target_tile->hasProperty(interactable)) {
+          pushd("You interacted.");
+        } else {
+          pushd("Nothing to interact with here.");
+        }
+        interactionMode = false;
         break;
       }
-
-      if (target_type != WALL) { // If tile below is not a wall, move
+      
+      if (!target_tile->hasProperty(solid)) {
         y++;
       } else {
         pushd(wallBlock);
@@ -213,17 +248,20 @@ void Player::playerInput(Map& map) {
     break;
     
     case 'd':
-    if (x < map.mapData[y].size() - 1) { // Check if the player isn't at the right edge
-      target_type = map.mapData[y][x + 1].tileType; // Tile to the right
-
+    if (x < map.mapData[y].size() - 1) {
+      target_tile = &map.mapData[y][x + 1];
+      
       if (interactionMode) {
-        // Handle interaction logic here
-        pushd("You interacted."); // Placeholder statement
-        interactionMode = false; // Reset interaction mode
+        if (target_tile->hasProperty(interactable)) {
+          pushd("You interacted.");
+        } else {
+          pushd("Nothing to interact with here.");
+        }
+        interactionMode = false;
         break;
       }
-
-      if (target_type != WALL) { // If tile to right is not a wall, move
+      
+      if (!target_tile->hasProperty(solid)) {
         x++;
       } else {
         pushd(wallBlock);
@@ -234,15 +272,7 @@ void Player::playerInput(Map& map) {
     break;
     
     case 'e':
-
-    if (interactionMode) {
-      // Handle interaction logic here
-      pushd("No debug mode yet."); // Placeholder statement
-      interactionMode = false; // Reset interaction mode
-      break;
-    }
-
-    interactionMode = true; // Set interaction mode
+    interactionMode = true;
     break;
     
     case 'q':
@@ -306,6 +336,26 @@ void gameLoop(Player& player, Map& map) {
   player.playerInput(map); // Pass the map to playerInput
   map.drawMap(player); // Draw map with updated player position
   printd();
+}
+
+void pushError(const string& message) {
+  errorId++;
+  // check if `error.log` exists
+  ifstream errorFile("error.log");
+  if (!errorFile) {
+    // Create the file if it doesn't exist
+    ofstream newFile("error.log");
+    newFile.close();
+  }
+  ofstream errorLog("error.log", ios::app); // Open in append mode
+  if (!errorLog) {
+    cerr << "Error opening error.log for writing." << endl;
+    return;
+  }
+  
+   // Write the error message to the log
+  errorLog << errorId << "| " << message << endl;
+  errorLog.close();
 }
 
 int main() {

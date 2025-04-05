@@ -191,8 +191,7 @@ Ideas *(long term to do)* ::
 
 [SPECIAL]
 // Declares which tiles are deemed "special" (meaning they have unique behavior when interacted with)
-// The [x,y] are the coordinates of the tile and the optional [x,y:id] specifies a unique id interaction identifier for linking of behavior
-// IDs start at 1 and increment by 1 for each new special tile unless specified otherwise, after which it continues with next id rather than earliest available (example: 1; 2; 12 (specified); 13; 14; ... )
+// The [x,y:id] specifies an id (interaction identifier) for linking of behavior with specified coordinates
 
 1,1;1,5;3,1;5,1;7,1;7,7;9,5;10,5:6;11,5:6;23,6;23,7:7;23,8;
 
@@ -256,7 +255,7 @@ Here is a spanish.lang example:
 :Tocas en la pantalla. No pasa nada. ¿Qué esperabas?
 :Hay una llave debajo. La recoges. -- [Encontrates la LLAVE]|ADD_ITEM(KEY)|
 \```
-  ```  
+```  
 <br>
   
 That's kind of all I have. This is still very early in development.
