@@ -2,8 +2,10 @@
 
 This is *(currently)* nameless text-based 2D RPG*(-ish)* is a work-in-progress game that I felt like making. It started in **`C`**, but I decided to remake it with **`C++`** because it felt a bit easier *(I was **kind of** right about that)*.
 <br>
+
 In it, you control a little circle *(also (currently) nameless)* with `WASD` for **move**ment, `e` for **interact**ing *(though, that has yet to be implemented)*, `q` to **quit** *(the preferable way to exit)*, and `i` to see your **inventory** *(also yet to be implemented)*.
 <br>
+
 Because it is still a WIP, there are many things in store for the future of this game like... story!... more content!... actual game!... and more stuff!... Yeah, it still has some ***(a lot)*** ways to go, but I've got hope for it.
 <br>
 
