@@ -22,9 +22,9 @@ In case you want to know what it looks like, there's a gif of me doing stuff in 
 Ｈ　　　　　　　　　　Ｈ　　　　　　　　Ｈ　　Ｈ
 Ｈ　　　　　　ＨＨＨＨＨＨ　　　　　　　ＨＨＨＨＨ
 Ｈ＃　　　　Ｈ　　＝＝＝　Ｈ　　　　　　　　　　Ｈ
-ＨＨＨ　　ＨＨ　　　　　　　　　　　＃　ＨＨ　［Ｈ
-Ｈ　　　　　Ｈ］　　　　　　　　　　＃　ＨＨ　［Ｈ
-Ｈ　　　　　Ｈ　　　　　　　　　　　＃　ＨＨ　［Ｈ
+ＨＨＨ　　ＨＨ　　　　　　　　　　　＃　ＨＨ　[Ｈ
+Ｈ　　　　　Ｈ］　　　　　　　　　　＃　ＨＨ　[Ｈ
+Ｈ　　　　　Ｈ　　　　　　　　　　　＃　ＨＨ　[Ｈ
 Ｈ　　　　　Ｈ　　　　　　　　　　　　　　　　　Ｈ
 ＨＨＨ－ＨＨＨＨＨＨＨＨＨＨ　　　　　　ＨＨＨＨＨ
 　　　　　　　　　　　　　　ＨＨＨＨＨＨ　　　　　
@@ -108,10 +108,11 @@ cd  RPG
 To **compile**, there is no makefile yet so use your C/C++ compiler of choice or whatever is available to you, have them in the same folder and compile. Then just run the output file and you can play it *(unless it crashes; in that case... oh well...)*.
 <br>
 
-### Example with G++:
+### Example with G++ (assuming your inside the `RPG` directory):
 
 ```
-g++ *.cpp -o RPG
+cd ./src
+g++ main.cpp -o RPG
 ```
 <br>
 
@@ -176,12 +177,10 @@ Ideas *(long term to do)* ::
 &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;:: Planned Supported Languages ::  
 &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;- English  
 &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;- Spanish  
-&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;- German  
+&nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;- ...
   
 &nbsp;&nbsp;  &nbsp;&nbsp;:: Theoretical Structure (`map.cmap`) (with comments! (not going to be in actual file)) ::  
-  ```
-// File for exploring more complicated potential cmap concepts
-
+```
 [MAP]
 // Provides integers to be mapped to characters for drawing of the map
 // The 'a' after a number specifies the player's starting position and the number before it is the tile that is "under" the player
@@ -193,22 +192,21 @@ Ideas *(long term to do)* ::
 // Declares which tiles are deemed "special" (meaning they have unique behavior when interacted with)
 // The [x,y:id] specifies an id (interaction identifier) for linking of behavior with specified coordinates
 
-1,1;1,5;3,1;5,1;7,1;7,7;9,5;10,5:6;11,5:6;23,6;23,7:7;23,8;
+1,1:1
+1,5:2
+3,1:3
+5,1:4
+7,1:5
+7,7:6
+9,5:7
+10,5:7
+11,5:7
+23,6:8
+23,7:9
+23,8:9
 
-/*
-Is the same as:
-1,1:1;
-1,5:2;
-3,1:3;
-5,1:4;
-7,1:5;
-7,7:6;
-9,5:7;
-10,5:7;
-11,5:7;
-23,6:8;
-23,7:9;
-23,8:9;
+/* is the same as:
+1,1;1,5;3,1;5,1;7,1;7,7;9,5;10,5:6;11,5:6;23,6;23,7:7;23,8;
 */
 
 [LANG]
@@ -221,14 +219,18 @@ GERMAN
 
 Here is an example english.lang (with comments!):
 \```
-// Dialogue is linked with a tile ID through having equal ID (tile with ID 1 has dialogue with ID 1, etc.)
-// Dialogue can also invoke actions through the use of |action_id|, which will trigger the action with that ID
+// Dialogue is linked with an ID
+// Dialogue can also invoke actions through the use of `|action(arguments)|`
 
-:This is Chair 1. It hates Chair 4. // Engine presumes ID of 1
-:This is Chair 4. Exiled and despised for its crimes. // Subsequently, this has ID 2
-:This is Chair 2. It's Chair 1's best friend. It also -- hates Chair 4. // And this, 3
-:This is Chair 3. It wants to be friends with Chair -- 1 and 2.
-:I don't even know who this is.
+1:This is Chair 1. It hates Chair 4.
+2:This is Chair 4. Exiled and despised for its crimes.
+3:This is Chair 2. It's Chair 1's best friend. It also -- hates Chair 4.
+4:This is Chair 3. It wants to be friends with Chair -- 1 and 2.
+5:I don't even know who this is.
+6:The fridge is empty. Maybe you'll buy groceries... -- later.
+7:The counter is all nasty. What even is that substance? -- You really are irresponsible.
+8:You tap on the screen. Nothing happens. What did you -- expect?
+9:There's a key underneath. You pick it up. -- [You found the KEY]|ADD_ITEM(KEY)|
 
 // Multiple dialogues with the same ID will be linked together and shown in order
 :The fridge is empty. Maybe you'll buy groceries... -- later.
@@ -238,22 +240,6 @@ Here is an example english.lang (with comments!):
 :The counter is all nasty. What even is that substance? -- You really are irresponsible. // Because three tiles have an ID of 7 and this has an ID of 7, all three tiles will have this text
 :You tap on the screen. Nothing happens. What did you -- expect? // Similar logic applies here
 :There's a key underneath. You pick it up. -- [You found the KEY]|ADD_ITEM(KEY)|
-\```
-
-Here is a spanish.lang example:
-\```
-[SPANISH]
-:Esta es Silla 1. Odia a Silla 4.
-:Esta es Silla 4. Exiliada y despreciada por sus crímenes.
-:Esta es Silla 2. Es el mejor amigo de Silla 1. También -- odia a Silla 4.
-:Esta es Silla 3. Quiere ser amigo de Silla -- 1 y 2.
-:No sé ni quién es.
-:El refrigerador está vacío. Tal vez compres víveres... -- más tarde.
-6:Revisar de nuevo no va a cambiar el hecho de que -- está vacío.
-6:¿Otra vez? Esto es un poco triste.
-:El mostrador está todo asqueroso. ¿Qué es esa sustancia? -- Realmente eres irresponsable.
-:Tocas en la pantalla. No pasa nada. ¿Qué esperabas?
-:Hay una llave debajo. La recoges. -- [Encontrates la LLAVE]|ADD_ITEM(KEY)|
 \```
 ```  
 <br>
