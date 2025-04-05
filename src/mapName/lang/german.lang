@@ -1,0 +1,9 @@
+1:Das ist Stuhl 1. Es hasst Stuhl 4.
+2:Das ist Stuhl 4. Verbannt und verachtet für seine Verbrechen.
+3:Das ist Stuhl 2. Es ist Stuhl 1s bester Freund. Es -- hasst auch Stuhl 4.
+4:Das ist Stuhl 3. Es will mit Stuhl -- 1 und 2 befreundet sein.
+5:Ich weiß nicht einmal, wer das ist.
+6:Der Kühlschrank ist leer. Vielleicht kaufst du später -- Lebensmittel...
+7:Die Theke ist ekelhaft. Was ist das für eine Substanz? -- Du bist wirklich verantwortungslos.
+8:Du klopfst auf den Bildschirm. Nichts passiert. Was hast du -- erwartet?
+9:Es gibt einen Schlüssel darunter. Du hebst ihn auf. -- [Du hast den SCHLÜSSEL gefunden]|ADD_ITEM(KEY)|
