@@ -1,9 +1,8 @@
 #include "main.hpp"
 
 ostringstream dialogue; // Global variable for dialogue
-string mapDirectory = "./mapName/";
-bool quitGame = false;
-bool interactionMode = false;
+string mapDirectory = "./maps/mapName/";
+bool quitGame = false, interactionMode = false;
 
 void Map::drawMap(const Player& player) {
   clear(); // Clear the console before drawing the map
@@ -14,15 +13,15 @@ void Map::drawMap(const Player& player) {
         continue;
       }
       switch (mapData[row][col].tileType) {
-        case EMPTY: cout << "　"; break; // Space
-        case WALL: cout << "Ｈ"; break; // Wall
-        case CHAIR: cout << "＃"; break; // Chair
-        case VERTICAL_DOOR: cout << "｜"; break; // Vertical Door
+        case EMPTY:           cout << "　"; break; // Space
+        case WALL:            cout << "Ｈ"; break; // Wall
+        case CHAIR:           cout << "＃"; break; // Chair
+        case VERTICAL_DOOR:   cout << "｜"; break; // Vertical Door
         case HORIZONTAL_DOOR: cout << "＿"; break; // Horizontal Door
-        case TABLE: cout << "＝"; break; // Table/Counter/Bar/Desk
-        case LEFT_PANEL: cout << "［"; break; // Left-facing panel
-        case RIGHT_PANEL: cout << "］"; break; // Right-facing panel
-        default: cout << "？"; break; // Unknown tile
+        case TABLE:           cout << "＝"; break; // Table/Counter/Bar/Desk
+        case LEFT_PANEL:      cout << "［"; break; // Left-facing panel
+        case RIGHT_PANEL:     cout << "］"; break; // Right-facing panel
+        default:              cout << "？"; break; // Unknown tile
       }
     }
     cout << endl;
@@ -31,137 +30,125 @@ void Map::drawMap(const Player& player) {
 
 void Map::getMapData() {
   mapData.clear(); // Clear existing map data to avoid appending to old data
-  spawn[0] = 0; spawn[1] = 0;  // Set spawn position
+  spawn[0] = 0, spawn[1] = 0;  // Set spawn position
   
   ifstream mapFile(mapDirectory + "map.cmap");
   if (!mapFile.is_open()) {
-    pushError("Failed to open map file: " + mapDirectory + "map.cmap");
-    return; // This will be changed to use a default map
+    pushError("Failed to open map file: " + mapDirectory + "map.cmap"); return; // This will be changed to use a default map
   }
   
-  string line;
-  string mapDataSection;
+  string line, mapDataSection;
   
   // Find the [MAP] section
   while (getline(mapFile, line)) {
-    if (line == "[MAP]") {
-      // Read the entire [MAP] section as a single string
-      while (getline(mapFile, line)) {
-        if (line.empty() || line[0] == '[') break; // Stop at the next section or empty line
-        mapDataSection += line + " ";
-      }
-      
-      // Split the mapSection string into rows based on spaces
-      istringstream mapStream(mapDataSection);
-      string row;
-      while (mapStream >> row) {
-        vector<Tile> rowData; // Vector to store Tile for the row
-        
-        for (char c : row) {
-          Tile tile; // Create a new Tile entry
-          
-          if (c == 'a') {
-            // Set spawn position to position of 'a'
-            spawn[0] = rowData.size(); // X position
-            spawn[1] = mapData.size(); // Y position
-          }
-          
-          if (c >= '0' && c <= '9') {
-            tile.tileType = static_cast<TileType>(c - '0');  // Set the Tile type based on the character
-            
-            // Set properties based on tile type
-            switch (tile.tileType) {
-            case WALL:
-              tile.setProperty(solid);
-              break;
-            case CHAIR:
-              tile.setProperty(interactable);
-              break;
-            case TABLE:
-              tile.setProperty(solid);
-              // tile.setProperty(interactable);  // Not yet
-              break;
-            case VERTICAL_DOOR:
-            case HORIZONTAL_DOOR:
-              tile.setProperty(interactable);
-              break;
-            case LEFT_PANEL:
-            case RIGHT_PANEL:
-              tile.setProperty(interactable);
-              break;
-            default:
-              break;
-            }
-          }
-          
-          tile.specialID = -1; // Default to no Special ID initially (you'll modify this later)
-          
-          rowData.push_back(tile); // Push the Tile to the row
-        }
-        mapData.push_back(rowData); // Add the row to mapData
-      }
-    }
+    if (line == "[MAP]") { readMapSection(mapFile, line, mapDataSection, spawn); break; }
     
-    if (line == "[SPECIAL]") {
-      // Handle special ID section
-      while (getline(mapFile, line)) {
-        if (line.empty() || line[0] == '[') break; // Stop at the next section or empty line
-        
-        // Parse Special section format: "x,y:id"
-        istringstream specialStream(line);
-        int x, y, id;
-        
-        // Read the x coordinate
-        if (!(specialStream >> x)) {
-          pushError("Error: Invalid x coordinate in special section");
-          continue;
-        }
-        
-        // Expect a comma
-        if (specialStream.get() != ',') {
-          pushError("Error: Expected ',' in special section");
-          continue;
-        }
-        
-        // Read the y coordinate
-        if (!(specialStream >> y)) {
-          pushError("Error: Invalid y coordinate in special section");
-          continue;
-        }
-        
-        // Expect a colon
-        if (specialStream.get() != ':') {
-          pushError("Error: Expected ':' in special section");
-          continue;
-        }
-        
-        // Read the special ID
-        if (!(specialStream >> id)) {
-          pushError("Error: Invalid Special ID in special section");
-          continue;
-        }
-        
-        // Ensure coordinates are within map bounds
-        if (y >= 0 && y < mapData.size() && x >= 0 && x < mapData[y].size()) {
-          // Assign the special ID to the correct position in the map data
-          mapData[y][x].specialID = id;
-        } else {
-          pushError("Error: Special ID coordinates out of bounds: (" + to_string(x) + ", " + to_string(y) + ") with ID " + to_string(id) + " because of " + to_string(mapData.size()) + " rows and " + to_string(mapData[y].size()) + " columns.");
-        }
-      }
-    }
+    if (line == "[SPECIAL]") { readSpecialSection(mapFile, line); break; }
     
-    if (line == "[EOF]") {
-      break; // Stop reading
-    }
+    // Skip empty and comment lines
+    if (line.empty() || line[0] == '#') { continue; }
+
+    // Stop reading
+    if (line == "[EOF]") { break; }
     
-    if (line.empty() || (line[0] == '/' && line[1] == '/')) {
-      continue; // Skip empty lines or lines that start with "//"
-    }
   }
   mapFile.close(); // Close the file
 }
 
+void Map::readSpecialSection(ifstream& mapFile, string& line) {
+  // Handle special ID section
+  while (getline(mapFile, line)) {
+    if (line.empty() || line[0] == '[') break; // Stop at the next section or empty line
+    
+    // Parse Special section format: "x,y:id"
+    istringstream specialStream(line);
+    int x, y, id;
+    
+    // Read the x coordinate
+    if (!(specialStream >> x)) {
+      pushError("Error: Invalid x coordinate in special section");
+      continue;
+    }
+    
+    // Expect a comma
+    if (specialStream.get() != ',') {
+      pushError("Error: Expected ',' in special section");
+      continue;
+    }
+    
+    // Read the y coordinate
+    if (!(specialStream >> y)) {
+      pushError("Error: Invalid y coordinate in special section");
+      continue;
+    }
+    
+    // Expect a colon
+    if (specialStream.get() != ':') {
+      pushError("Error: Expected ':' in special section");
+      continue;
+    }
+    
+    // Read the special ID
+    if (!(specialStream >> id)) {
+      pushError("Error: Invalid Special ID in special section");
+      continue;
+    }
+    
+    // Ensure coordinates are within map bounds
+    if (y >= 0 && y < mapData.size() && x >= 0 && x < mapData[y].size()) {
+      // Assign the special ID to the correct position in the map data
+      mapData[y][x].specialID = id;
+    } else {
+      pushError("Error: Special ID coordinates out of bounds: (" + to_string(x) + ", " + to_string(y) + ") with ID " + to_string(id) + " because of " + to_string(mapData.size()) + " rows and " + to_string(mapData[y].size()) + " columns.");
+    }
+  }
+}
+
+void Map::readMapSection(ifstream& mapFile, string& line, string& mapDataSection, int spawn[2]) {
+  // Read the entire [MAP] section as a single string
+  while (getline(mapFile, line)) {
+    if (line.empty() || line[0] == '[') break; // Stop at the next section or empty line
+    mapDataSection += line + " ";
+  }
+  
+  // Split the mapSection string into rows based on spaces
+  istringstream mapStream(mapDataSection);
+  string row;
+  while (mapStream >> row) {
+    vector<Tile> rowData; // Vector to store Tile for the row
+    
+    for (char c : row) {
+      Tile tile; // Create a new Tile entry
+      
+      if (c == 'X') {
+        // Set spawn position to position of 'X'
+        spawn[0] = rowData.size(); // X position
+        spawn[1] = mapData.size(); // Y position
+      }
+      
+      if (c >= '0' && c <= '9') {
+        tile.tileType = static_cast<TileType>(c - '0');  // Set the Tile type based on the character
+        
+        // Set properties based on tile type
+        switch (tile.tileType) {
+        case TABLE:         // tile.setProperty(interactable);  // Not yet
+        case WALL:          tile.setProperty(solid);        break;
+        case CHAIR:
+        case VERTICAL_DOOR:
+        case HORIZONTAL_DOOR:
+        case LEFT_PANEL:
+        case RIGHT_PANEL:   tile.setProperty(interactable); break;
+        default: break;
+        }
+      }
+      
+      tile.specialID = -1; // Default to no Special ID initially (you'll modify this later)
+      
+      rowData.push_back(tile); // Push the Tile to the row
+    }
+    mapData.push_back(rowData); // Add the row to mapData
+  }
+}
 
 void Player::playerInput(Map& map) {
   char cmd;
