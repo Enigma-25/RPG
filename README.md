@@ -177,7 +177,7 @@ Please accept this gif of a cat I found on the internet as my apology for this l
 ```
 [MAP]
 // Provides integers to be mapped to characters for drawing of the map
-// The 'a' after a number specifies the player's starting position and the number before it is the tile that is "under" the player
+// The 'x' after a number specifies the player's starting position and the number before it is the tile that is "under" the player
 
 111111111111111111111111 12020202000a1000000001001 100000000003000000003001 100000000001000000001001 1000000111111000000011111 1200001005550100000000001 1110011000000000002011061 1000001700000000002011061 1000001000000000002011061 1000001000000000000000001 1114111111111100000011111 0000000000000011111100000
 
