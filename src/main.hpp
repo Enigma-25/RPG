@@ -60,7 +60,7 @@ struct Tile {
 class Map; // Forward declaration
 
 class Player {
-  public:
+public:
   int x, y; // Player position
   Player(int startX, int startY) : x(startX), y(startY) {}
   
@@ -68,10 +68,12 @@ class Player {
 };
 
 class Map {
-  public:
+public:
   vector<vector<Tile>> mapData; // Map data
   void drawMap(const Player& player); // Draw the map
   void getMapData(); // Fetch map data from file
+  void readMapSection(ifstream& mapFile, string& line, string& mapDataSection, int spawn[2]); // Read map section
+  void readSpecialSection(ifstream& mapFile, string& line); // Read special section
   int spawn[2]; // Starting position
 };
 
@@ -85,7 +87,7 @@ int errorId = 0;
 bool debugFlag = false;
 
 // Function Prototypes
-void pushd(const std::string& message, const char* speaker = nullptr);
+void pushd(const string& message, const char* speaker = nullptr);
 void printd();
 void clear();
 void pushError(const string& message);
