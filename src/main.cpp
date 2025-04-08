@@ -1,13 +1,15 @@
 #include "main.hpp"
 
-ostringstream dialogue; // Global variable for dialogue
-string mapDirectory = "./maps/mapName/";
-bool quitGame = false, interactionMode = false;
+// Global variable declarations
+deque<string> dialogueBuffer;
+vector<string> mapList; // List of maps 
+string mapName = "mapName";
+bool quitGame = false, interactionMode = false, gamePaused = false;
 
 void Map::drawMap(const Player& player) {
   clear(); // Clear the console before drawing the map
-  for (int row = 0; row < mapData.size(); ++row) {
-    for (int col = 0; col < mapData[row].size(); ++col) {
+  for (int row = 0; row < static_cast<int>(mapData.size()); ++row) {
+    for (int col = 0; col < static_cast<int>(mapData[row].size()); ++col) {
       if (row == player.y && col == player.x) {
         cout << "Ｏ"; // Draw player
         continue;
@@ -32,9 +34,11 @@ void Map::getMapData() {
   mapData.clear(); // Clear existing map data to avoid appending to old data
   spawn[0] = 0, spawn[1] = 0;  // Set spawn position
   
-  ifstream mapFile(mapDirectory + "map.cmap");
+  string mapPath = "maps/" + mapName + "/map.cmap";
+
+  ifstream mapFile(mapPath);
   if (!mapFile.is_open()) {
-    pushError("Failed to open map file: " + mapDirectory + "map.cmap"); return; // This will be changed to use a default map
+    pushError("Failed to open map: " + mapName + " from " + mapPath); return; // This will be changed to use a default map
   }
   
   string line, mapDataSection;
@@ -62,7 +66,8 @@ void Map::readSpecialSection(ifstream& mapFile, string& line) {
     
     // Parse Special section format: "x,y:id"
     istringstream specialStream(line);
-    int x, y, id;
+    size_t x, y;
+    int id;
     
     // Read the x coordinate
     if (!(specialStream >> x)) {
@@ -95,7 +100,7 @@ void Map::readSpecialSection(ifstream& mapFile, string& line) {
     }
     
     // Ensure coordinates are within map bounds
-    if (y >= 0 && y < mapData.size() && x >= 0 && x < mapData[y].size()) {
+    if (y < mapData.size() && x < mapData[y].size()) {
       // Assign the special ID to the correct position in the map data
       mapData[y][x].specialID = id;
     } else {
@@ -209,7 +214,7 @@ void Player::playerInput(Map& map) {
     break;
     
     case 's':
-    if (y < map.mapData.size() - 1) {
+    if (y >= 0 && static_cast<size_t>(y) < map.mapData.size() - 1) {
       target_tile = &map.mapData[y + 1][x];
       
       if (interactionMode) {
@@ -233,7 +238,7 @@ void Player::playerInput(Map& map) {
     break;
     
     case 'd':
-    if (x < map.mapData[y].size() - 1) {
+    if (x >= 0 && static_cast<size_t>(x) < map.mapData[y].size() - 1) {
       target_tile = &map.mapData[y][x + 1];
       
       if (interactionMode) {
@@ -258,36 +263,94 @@ void Player::playerInput(Map& map) {
     
     case 'e':
     if (interactionMode) {
-      debugFlag = !debugFlag; // Toggle debug mode
-      break;
-    }
-
-    interactionMode = true;
-    break;
-    
-    case 'q':
-    quitGame = true; // Set the quit flag;
-    break;
-
-    // Print error.log contents when debugging flag is on
-    case 'x':
-    if (debugFlag) {
-      ifstream errorFile("error.log");
-      if (errorFile) {
-        string line;
-        while (getline(errorFile, line)) {
-          cout << line << endl;
+      if (debugFlag) {
+        // Debug menu when in debug mode
+        pushd("Debug Menu:\n1. View error log\n2. View player info\n3. View map info\n4. Toggle coordinate display\n5. Exit debug menu\n6. Test dialogue buffer");
+        char debug_cmd;
+        cin >> debug_cmd;
+        switch(debug_cmd) {
+          case '1':
+            {
+              ifstream errorFile("error.log");
+              if (errorFile) {
+                string line;
+                while (getline(errorFile, line)) {
+                  pushd(line);
+                }
+              } else {
+                pushError("Debug: Could not open error.log");
+                pushd("No error log available");
+              }
+            }
+            break;
+          case '2':
+            {
+              string bufferInfo = "Player Info:\nPosition: (" + to_string(x) + ", " + to_string(y) + 
+                                  ")\nCurrent Tile: " + to_string(map.mapData[y][x].tileType) + 
+                                  "\nInteraction Mode: " + (interactionMode ? "ON" : "OFF") +
+                                  "\nDialogue Buffer: " + to_string(dialogueBuffer.size()) + "/" + 
+                                  to_string(maxBufferSize);
+              pushd(bufferInfo);
+            }
+            break;
+          case '3':
+            pushd("Map Info:\nName: " + mapName + 
+                  "\nSize: " + to_string(map.mapData.size()) + "x" + 
+                  to_string(map.mapData[0].size()) + 
+                  "\nSpawn: (" + to_string(map.spawn[0]) + ", " + 
+                  to_string(map.spawn[1]) + ")");
+            break;
+          case '4':
+            debugFlag = !debugFlag;
+            pushd("Coordinate display: " + string(debugFlag ? "ON" : "OFF"));
+            break;
+          case '5':
+            break;
+          case '6':
+            {
+              pushd("Test message 1");
+              pushd("Test message 2");
+              pushd("Test message 3", "Debug");
+              pushd("Messages should appear together");
+            }
+            break;
+          default:
+            pushd("Invalid debug command");
         }
       } else {
-        pushError("Error opening error.log for reading.");
+        debugFlag = !debugFlag;
       }
-    } else {
-      pushd("Invalid command.");
+      interactionMode = false;
       break;
     }
-    
+
+    // Validate position before entering interaction mode
+    if (y >= 0 && y < static_cast<int>(map.mapData.size()) &&
+        x >= 0 && x < static_cast<int>(map.mapData[y].size())) {
+      interactionMode = true;
+      pushd("Interaction mode: ON");
+    } else {
+      pushError("Player position out of bounds: (" + to_string(x) + ", " + to_string(y) + ")");
+      pushd("Cannot enter interaction mode - invalid position");
+    }
+    break;
+
+    case 'q':
+    pushd("Quitting game...");
+    quitGame = true;
+    break;
+
+    // Debug command now integrated into debug menu
+    case 'x':
+    if (debugFlag) {
+      pushd("Use 'e' in interaction mode to access debug menu");
+    } else {
+      pushd("Invalid command");
+    }
+    break;
+
     default:
-    pushd("Invalid command.");
+    pushd("Invalid command: '" + string(1, cmd) + "'");
     interactionMode = false; // Reset interaction mode
     break;
   }
@@ -313,19 +376,25 @@ void pushd(const std::string& message, const char* speaker) {
     }
   }
   
-  if (speaker == nullptr) {
-    dialogue << "* \"" << formattedMessage.str() << "\"";  // If no speaker, use "*"
-  } else {
-    dialogue << speaker << ": \"" << formattedMessage.str() << "\"";  // Include speaker if provided
+  string finalMessage = speaker == nullptr ? 
+    "* \"" + formattedMessage.str() + "\"" :
+    string(speaker) + ": \"" + formattedMessage.str() + "\"";
+
+  dialogueBuffer.push_back(finalMessage);
+  
+  // Keep buffer size under limit
+  while (dialogueBuffer.size() > maxBufferSize) {
+    dialogueBuffer.pop_front();
   }
 }
 
 void printd() {
-  if (!dialogue.str().empty()) {
-    cout << dialogue.str() << endl;
+  if (!dialogueBuffer.empty()) {
+    for (const auto& msg : dialogueBuffer) {
+      cout << msg << endl;
+    }
+    dialogueBuffer.clear(); // Clear after printing
   }
-  dialogue.str(""); // Reset the string buffer
-  dialogue.clear(); // Clear the internal state of the stream
 }
 
 void setup(Player& player, Map& map) {
@@ -334,6 +403,8 @@ void setup(Player& player, Map& map) {
   
   map.getMapData(); // Fetch the map data
   map.drawMap(player); // Draw the map with player
+
+  mapList.push_back("mapName2");
   
   pushd("Use WASD to move, Q to quit.");
   printd();
@@ -368,14 +439,25 @@ void pushError(const string& message) {
   errorLog.close();
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+  // Initialize mapList with default map
+  mapList.push_back("mapName");
+
+  if (argc > 1) {
+    mapList[0] = argv[1]; // Get the map name from command line argument
+  } else if (argc > 2) {
+    cerr << "Error: Too many arguments provided." << endl;
+    return 1;
+  }
+
   Player player(0, 0); // Initialize player
   Map map; // Initialize map
   
   setup(player, map); // Set up the game with player and map
   
   while (!quitGame) {
-    gameLoop(player, map); // Run the game loop
+    if (!gamePaused) gameLoop(player, map); // Run the game loop
+    // else (to be added)
   }
   
   clear();
