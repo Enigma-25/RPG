@@ -262,6 +262,8 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
+  mapName = mapList[0]; // Set the map name
+
   Player player(0, 0); // Initialize player
   Map map; // Initialize map
   
