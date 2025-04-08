@@ -84,11 +84,10 @@ public:
 const int DIALOGUE_SIZE = 256;
 const size_t maxBufferSize = 5; // Move constant here
 extern std::deque<std::string> dialogueBuffer;
-extern bool quitGame, interactionMode, gamePaused;
+extern bool quitGame, interactionMode, gamePaused, debugFlag;
 extern string mapName;
 extern vector<string> mapList;
-int errorId = 0;
-bool debugFlag = false;
+extern int errorId;
 
 // Function Prototypes
 void pushd(const string& message, const char* speaker = nullptr);
