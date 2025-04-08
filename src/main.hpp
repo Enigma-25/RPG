@@ -10,6 +10,7 @@
 #include <sstream>
 #include <string>
 #include <cstdarg>
+#include <deque>  // Add for dialogue buffer
 
 // Using directives
 using std::cout;
@@ -23,6 +24,7 @@ using std::to_string;
 using std::vector;
 using std::ostringstream;
 using std::istringstream;
+using std::deque; // Add deque
 
 // Enum Definitions
 enum TileProperties {
@@ -75,14 +77,16 @@ public:
   void readMapSection(ifstream& mapFile, string& line, string& mapDataSection, int spawn[2]); // Read map section
   void readSpecialSection(ifstream& mapFile, string& line); // Read special section
   int spawn[2]; // Starting position
+  string getDebugInfo() const; // Add debug info method
 };
 
 // Global Variables
 const int DIALOGUE_SIZE = 256;
-extern ostringstream dialogue;
-extern bool quitGame;
-extern string mapDirectory;
-extern bool interactionMode;
+const size_t maxBufferSize = 5; // Move constant here
+extern std::deque<std::string> dialogueBuffer;
+extern bool quitGame, interactionMode, gamePaused;
+extern string mapName;
+extern vector<string> mapList;
 int errorId = 0;
 bool debugFlag = false;
 
@@ -91,5 +95,7 @@ void pushd(const string& message, const char* speaker = nullptr);
 void printd();
 void clear();
 void pushError(const string& message);
+void logCommand(const string& cmd, const Player& player);
+string getTileDebugInfo(const Tile& tile);
 
 #endif // MAIN_HPP
