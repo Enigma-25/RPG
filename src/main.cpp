@@ -18,8 +18,8 @@ void setup(Player& player, Map& map) {
   mapList.push_back("mapName2");
   
   pushd("Use WASD to move, Q to quit.");
-  pushd("Spawn: " + to_string(map.spawn[0]) + ", " + to_string(map.spawn[1]));
-  pushd("Current position: " + to_string(player.x) + ", " + to_string(player.y));
+  // pushd("Spawn: " + to_string(map.spawn[0]) + ", " + to_string(map.spawn[1]));
+  // pushd("Current position: " + to_string(player.x) + ", " + to_string(player.y));
   printd();
 }
 
