@@ -103,15 +103,20 @@ void Map::readMapSection(ifstream& mapFile, string& line, string& mapDataSection
   
   istringstream mapStream(mapDataSection);
   string row;
+  int rowIndex = -1, colIndex;  // Initialize row counter to -1 since we increment before use
+  
   while (mapStream >> row) {
     vector<Tile> rowData;
+    rowIndex++;
+    colIndex = -1;  // Reset column counter for each row
     
     for (char c : row) {
       Tile tile;
+      colIndex++;
       
       if (c == 'X') {
-        spawn[0] = rowData.size();
-        spawn[1] = mapData.size();
+        spawn[0] = colIndex;
+        spawn[1] = rowIndex;
       }
       
       if (c >= '0' && c <= '9') {
