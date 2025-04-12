@@ -1,0 +1,32 @@
+HHHHHHHHHHHHHHHHHHHHHH   HHHHHHH            HHHHHHH        HHHHHHHHHHHHHHHHHHH      HHHH           HHHHHHHH
+H   X                 HHHH     H            H     H      HHHHHHHHHHHHHHHHHHHHHHH   HHHH         HHHHHHHH
+H                              H            H     H     HHHHHH                      HHHH       HHHHHHHH      
+H     HHHHHHHHHHHHHHHHHHHH     H            H     H    HHHHHH                       HHHH     HHHHHHHH        
+H     H                  H     H            H     H   HHHHHH                        HHHH   HHHHHHHH          
+H     H                  H     H            H     H   HHHH                          HHHH HHHHHHHH            
+H     HHHHHHHHHHH        H     H            H     H   HHHH                          HHHHHHHHHHH              
+H               HHHHHHHHHH     H            H     H   HHHH                          HHHH HHHHHHHH            
+H                              H            H     H   HHHH                          HHHH   HHHHHHHH          
+H     HHHHHHHHHHHHHHHHHHHH     H            H     H   HHHHHH                        HHHH     HHHHHHHH        
+H     H                  H     H            H     H    HHHHHH                       HHHH       HHHHHHHH      
+H     H                   H     H          H     H      HHHHHH                      HHHH         HHHHHHHH    
+H     H                    H     HHHHHHHHHH     H        HHHHHHHHHHHHHHHHHHHHHH     HHHH           HHHHHHHH  
+H     H                     H                  H           HHHHHHHHHHHHHHHH         HHHH             HHHHHHH 
+HHH  HH                      HHHHHHHHHHH   HHHH
+  H  H                                 H   H
+HHH  HH           HHHHHHH         HHHHHH   HHHHHHHH         HHHHHHH           HHHHHHH
+ H     H         H     H         H                 H        H     H           H     H
+  H     H       H     H        H     HHHHHHHHHH     H       H     H           H     H
+   H     H     H     H        H     H          H     H      H     H           H     H
+    H     H   H     H        H     H            H     H     H     H           H     H
+     H     H H     H         H     H            H     H     H     H           H     H
+      H     H     H          H     H            H     H     H     H           H     H
+       H         H           H     H                  HHHHHHH     H           H     H
+        H       H            H     H                              H           H     H
+         H     HHHHHHHHHHHHHHH                        HHHHHHH     H           H     H
+         H                                      H     H      H     H         H     H
+         H     HHHHHHHHHHHHHHH                  H     H      H     H         H     H
+         H     H              H     H          H     H        H     H        H     H
+         H     H               H     HHHHHHHHHH     H         H     HHHHHHHHH     H
+         H     H                H                 H            H                 H
+         HHHHHHH                 HHHHHHHHHHHHHHHHH              HHHHHHHHHHHHHHHHH
