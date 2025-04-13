@@ -1,9 +1,0 @@
-1:This is Chair 1. It hates Chair 4.
-2:This is Chair 4. Exiled and despised for its crimes.
-3:This is Chair 2. It's Chair 1's best friend. It also -- hates Chair 4.
-4:This is Chair 3. It wants to be friends with Chair -- 1 and 2.
-5:I don't even know who this is.
-6:The fridge is empty. Maybe you'll buy groceries... -- later.
-7:The counter is all nasty. What even is that substance? -- You really are irresponsible.
-8:You tap on the screen. Nothing happens. What did you -- expect?
-9:There's a key underneath. You pick it up. -- [You found the KEY]|ADD_ITEM(KEY)|
