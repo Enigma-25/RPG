@@ -10,10 +10,7 @@
 #include <sstream>
 #include <string>
 #include <cstdarg>
-<<<<<<< HEAD
-=======
 #include <deque>  // Add for dialogue buffer
->>>>>>> origin/dev
 
 // Using directives
 using std::cout;
@@ -27,10 +24,7 @@ using std::to_string;
 using std::vector;
 using std::ostringstream;
 using std::istringstream;
-<<<<<<< HEAD
-=======
 using std::deque; // Add deque
->>>>>>> origin/dev
 
 // Enum Definitions
 enum TileProperties {
@@ -68,11 +62,7 @@ struct Tile {
 class Map; // Forward declaration
 
 class Player {
-<<<<<<< HEAD
-  public:
-=======
 public:
->>>>>>> origin/dev
   int x, y; // Player position
   Player(int startX, int startY) : x(startX), y(startY) {}
   
@@ -80,13 +70,6 @@ public:
 };
 
 class Map {
-<<<<<<< HEAD
-  public:
-  vector<vector<Tile>> mapData; // Map data
-  void drawMap(const Player& player); // Draw the map
-  void getMapData(); // Fetch map data from file
-  int spawn[2]; // Starting position
-=======
 public:
   vector<vector<Tile>> mapData; // Map data
   void drawMap(const Player& player); // Draw the map
@@ -95,25 +78,10 @@ public:
   void readSpecialSection(ifstream& mapFile, string& line); // Read special section
   int spawn[2]; // Starting position
   string getDebugInfo() const; // Add debug info method
->>>>>>> origin/dev
 };
 
 // Global Variables
 const int DIALOGUE_SIZE = 256;
-<<<<<<< HEAD
-extern ostringstream dialogue;
-extern bool quitGame;
-extern string mapDirectory;
-extern bool interactionMode;
-int errorId = 0;
-bool debugFlag = false;
-
-// Function Prototypes
-void pushd(const std::string& message, const char* speaker = nullptr);
-void printd();
-void clear();
-void pushError(const string& message);
-=======
 const size_t maxBufferSize = 5; // Move constant here
 extern std::deque<std::string> dialogueBuffer;
 extern bool quitGame, interactionMode, gamePaused, debugFlag;
@@ -128,6 +96,5 @@ void clear();
 void pushError(const string& message);
 void logCommand(const string& cmd, const Player& player);
 string getTileDebugInfo(const Tile& tile);
->>>>>>> origin/dev
 
 #endif // MAIN_HPP
