@@ -3,7 +3,24 @@
 This is *(currently)* nameless text-based 2D RPG*(-ish)* is a work-in-progress game that I felt like making. It started in **`C`**, but I decided to remake it with **`C++`** because it felt a bit easier *(I was **kind of** right about that)*.
 <br>
 
-In it, you control a little circle *(also (currently) nameless)* with `WASD` for **move**ment, `e` for **interact**ing *(though, that has yet to be implemented)*, `q` to **quit** *(the preferable way to exit)*, and `i` to see your **inventory** *(also yet to be implemented)*.
+In it, you control a little circle *(also (currently) nameless)* with:
+- `WASD` for **move**ment
+- `e` for **interact**ing and accessing the debug menu in debug mode
+- `q` to **quit**
+- Debug mode can be toggled by pressing `e` twice in interaction mode
+
+The game features:
+- Multiple maps that can be loaded and traversed
+- A debug mode with features like:
+  - View error logs
+  - View player info
+  - View map info
+  - Toggle coordinate display
+  - Test dialogue system
+- Dialogue system with multi-language support
+- Error logging
+- Tile properties system (solid, interactable, etc.)
+- Map conversion tools for easy map creation
 <br>
 
 Because it is still a WIP, there are many things in store for the future of this game like... story!... more content!... actual game!... and more stuff!... Yeah, it still has some ***(a lot)*** ways to go, but I've got hope for it.
@@ -22,14 +39,14 @@ In case you want to know what it looks like, there's a gif of me doing stuff in 
 Ｈ＃　＃　＃　＃　　　Ｈ　　　　　　　　Ｈ　ＯＨ
 Ｈ　　　　　　　　　　｜　　　　　　　　｜　　Ｈ
 Ｈ　　　　　　　　　　Ｈ　　　　　　　　Ｈ　　Ｈ
-Ｈ　　　　　　ＨＨＨＨＨＨ　　　　　　　ＨＨＨＨＨ
-Ｈ＃　　　　Ｈ　　＝＝＝　Ｈ　　　　　　　　　　Ｈ
-ＨＨＨ　　ＨＨ　　　　　 　　　　　　＃　ＨＨ　[Ｈ
-Ｈ　　　　　Ｈ］ 　　　　 　　　　　＃　ＨＨ　[Ｈ
-Ｈ　　　　　Ｈ　　　　　　 　　　　　＃　ＨＨ　[Ｈ
-Ｈ　　　　　Ｈ　　　　　　　　　　　　　　　　　Ｈ
-ＨＨＨ－ＨＨＨＨＨＨＨＨＨＨ　　　　　　ＨＨＨＨＨ
-　　　　　　　　　　　　　　ＨＨＨＨＨＨ　　　　　
+Ｈ　　　　　　ＨＨＨＨＨＨ　　　　　　　ＨＨＨＨ
+Ｈ＃　　　　Ｈ　　＝＝＝　Ｈ　　　　　　　　　Ｈ
+ＨＨＨ　　ＨＨ　　　　　　　  　　　＃　ＨＨ　[Ｈ
+Ｈ　　　　　Ｈ］　　　　　　   　　  ＃　ＨＨ　[Ｈ
+Ｈ　　　　　Ｈ　　　　　　　　　　  ＃　ＨＨ　[Ｈ
+Ｈ　　　　　Ｈ　　　　　　　　　　　　　　　　Ｈ
+ＨＨＨ－ＨＨＨＨＨＨＨＨ　　　　　　　ＨＨＨＨＨ
+　　　　　　　　　　　　ＨＨＨＨＨＨＨ
 * "Use WASD to move, Q to quit."
 > 
 ```
@@ -152,32 +169,33 @@ Please accept this gif of a cat I found on the internet as my apology for this l
 <br>
 
 ### To do  
-- Implement interactions  
-- Implement items  
-- Add door functionality  
-- Other stuff that I don't remember
-- Remembr the stuff I didn't rememberer  
-- Remmbrer to remmmeber the stuff that I didn't remeenmembr  
-- Rmemmmbereber that writing rmeembbemebreber over and over again is not good for me  
+- Expand interaction system beyond basic dialogue
+- Implement items and inventory
+- Add door functionality between maps
+- Implement save/load system
+- Add NPC movement and AI
+- Create map editor GUI
+- Add sound (if possible)
   
 ### Ideas *(long term to do)*  
 - 3D array for map coordinates (x, y) and interactions (z)  
-- `prompt()` function that prompts user, typically with a question, but accepts more variable inputs  
+- `prompt()` function for user input with validation
 - `config.ini` file for settings  
-- `save.dat` file for save files  
-- Interchangeable tilesets files  
-- New `.cmap` format (in-progress)  
-&nbsp;&nbsp; Multiple language support embedded into cmaps  
-&nbsp;&nbsp; &nbsp;&nbsp; Planned Supported Languages  
-&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;- English  
-&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;- Spanish  
-&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;- ...
+- `save.dat` file for save data  
+- Interchangeable tileset files  
+- Maybe even make a font for better tiles  
+- Enhanced `.cmap` format  
+  - Event system for complex interactions  
+  - Conditional dialogue branches  
+  - Item requirements for interactions  
+  - Combat system integration  
+  - Scripting support for custom behaviors
   
 ### Cmap structure
 ```
 [MAP]
 // Provides integers to be mapped to characters for drawing of the map
-// The 'a' after a number specifies the player's starting position and the number before it is the tile that is "under" the player
+// The 'x' after a number specifies the player's starting position and the number before it is the tile that is "under" the player
 
 111111111111111111111111 12020202000a1000000001001 100000000003000000003001 100000000001000000001001 1000000111111000000011111 1200001005550100000000001 1110011000000000002011061 1000001700000000002011061 1000001000000000002011061 1000001000000000000000001 1114111111111100000011111 0000000000000011111100000
 

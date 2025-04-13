@@ -1,5 +1,6 @@
 #include "main.hpp"
 
+<<<<<<< HEAD
 ostringstream dialogue; // Global variable for dialogue
 string mapDirectory = "./mapName/";
 bool quitGame = false;
@@ -349,6 +350,28 @@ void setup(Player& player, Map& map) {
   map.drawMap(player); // Draw the map with player
   
   pushd("Use WASD to move, Q to quit.");
+=======
+// Global variable declarations
+deque<string> dialogueBuffer;
+vector<string> mapList; // List of maps 
+string mapName = "mapName";
+bool quitGame = false, interactionMode = false, gamePaused = false;
+int errorId = 0;
+bool debugFlag = false;
+
+void setup(Player& player, Map& map) {
+  player.x = map.spawn[0];
+  player.y = map.spawn[1];
+  
+  map.getMapData(); // Fetch the map data
+  map.drawMap(player); // Draw the map with player
+
+  mapList.push_back("mapName2");
+  
+  pushd("Use WASD to move, Q to quit.");
+  // pushd("Spawn: " + to_string(map.spawn[0]) + ", " + to_string(map.spawn[1]));
+  // pushd("Current position: " + to_string(player.x) + ", " + to_string(player.y));
+>>>>>>> origin/dev
   printd();
 }
 
@@ -381,14 +404,38 @@ void pushError(const string& message) {
   errorLog.close();
 }
 
+<<<<<<< HEAD
 int main() {
   Player player(0, 0); // Initialize player
   Map map; // Initialize map
+=======
+int main(int argc, char* argv[]) {
+  // Initialize mapList with default map
+  mapList.push_back("mapName");
+
+  if (argc > 1) {
+    mapList[0] = argv[1]; // Get the map name from command line argument
+  } else if (argc > 2) {
+    cerr << "Error: Too many arguments provided." << endl;
+    return 1;
+  }
+
+  mapName = mapList[0]; // Set the map name
+
+  Map map; // Initialize map
+  map.getMapData(); // Get map data first to have spawn coordinates
+  Player player(map.spawn[0], map.spawn[1]); // Initialize player at spawn position
+>>>>>>> origin/dev
   
   setup(player, map); // Set up the game with player and map
   
   while (!quitGame) {
+<<<<<<< HEAD
     gameLoop(player, map); // Run the game loop
+=======
+    if (!gamePaused) gameLoop(player, map); // Run the game loop
+    // else (to be added)
+>>>>>>> origin/dev
   }
   
   clear();
@@ -396,4 +443,8 @@ int main() {
   printd();
   
   return 0;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/dev
